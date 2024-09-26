@@ -1,0 +1,30 @@
+
+@startuml teste
+"Administrador" as admin
+"Psicologa" as psi
+"Paciente" as paci
+"Cadastrar informações pessoais" as (cad)
+"Marcar consulta" as (mar)
+"Desmarcar consulta" as (desm)
+"Remarcar consulta" as (rem)
+admin --> (Gerar relatórios da plataforma)
+admin --> (Receber feedbacks da plataforma)
+admin --> (Gerenciar perfis de usuário)
+
+
+
+(cad) <-u- psi
+paci -d-> (cad)
+(rem) <-u- psi
+paci -d-> (rem)
+(desm) <-u- psi
+paci -d-> (desm)
+(mar) <-u- psi
+paci -d-> (mar)
+(Verificar horários marcados) <-u- psi
+(Verificar dados paciente) <-u- psi
+paci -d-> (Verificar horários disponíveis)
+paci -d-> (Verificar dados psicologo)
+
+
+@enduml
