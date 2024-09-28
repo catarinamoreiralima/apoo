@@ -32,6 +32,8 @@ user <|-- paci
 (desm) .u. (gerenciarConsultas) : <<extend>>
 (mar) .u. (gerenciarConsultas) : <<extend>>
 (rem) .u. (Contatar paciente) : <<extend>>
+(verificarHorarios) .u. (gerenciarConsultas) : <<extend>>
+
 psi -d-> (Contatar paciente)
 
 (rem) .. (verificarHorarios) : <<include>>
@@ -39,7 +41,5 @@ psi -d-> (Contatar paciente)
 
 psi -d-> (verificarPaciente)
 psi -d-> (verificarMarcados)
-
-user -d-> (verificarHorarios)
 paci -d-> (verificarPsico)
 @enduml
