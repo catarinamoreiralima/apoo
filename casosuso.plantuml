@@ -6,13 +6,13 @@
 
 "Cadastrar informações pessoais" as (cad)
 "Marcar consulta" as (mar)
-"Gerenciar consultas marcadas" as (gerenciarConsultas)
+"Gerenciar consultas" as (gerenciarConsultas)
 "Remarcar consulta" as (rem)
 "Desmarcar consulta" as (desm)
 "Verificar horários disponíveis" as (verificarHorarios)
 "Verificar dados psicólogo" as (verificarPsico)
 "Verificar dados paciente" as (verificarPaciente)
-"Verificar horários marcados" as (verificarMarcados)
+"Verificar pacientes marcados" as (verificarMarcados)
 
 admin --> (Gerar relatórios da plataforma)
 admin --> (Receber feedbacks da plataforma)
@@ -20,24 +20,26 @@ admin --> (Gerenciar perfis de usuário)
 
 user <|-- psi
 user <|-- paci
-user <|-- admin
 
-(cad) <-u- psi
-paci -d-> (cad)
-paci -d-> (mar)
 
-(gerenciarConsultas) <-u- psi
-paci -d-> (gerenciarConsultas)
+(cad) <-u- user
+
+
+(gerenciarConsultas) <-u- user
+
 
 (rem) .u. (gerenciarConsultas) : <<extend>>
 (desm) .u. (gerenciarConsultas) : <<extend>>
+(mar) .u. (gerenciarConsultas) : <<extend>>
+(rem) .u. (Contatar paciente) : <<extend>>
+psi -d-> (Contatar paciente)
 
-(rem) .> (verificarHorarios) : <<include>>
+(rem) .. (verificarHorarios) : <<include>>
 (mar) .down. (verificarHorarios) : <<include>> 
 
 psi -d-> (verificarPaciente)
 psi -d-> (verificarMarcados)
 
-paci -d-> (verificarHorarios)
+user -d-> (verificarHorarios)
 paci -d-> (verificarPsico)
 @enduml
