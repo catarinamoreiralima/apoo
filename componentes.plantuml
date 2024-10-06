@@ -1,0 +1,22 @@
+@startuml componentes
+
+[Gerenciamento de Consulta] ..> [Comunicacao e Notificacao] : use
+[Agenda e disponibilidade] ..> [Gerenciamento de Usuario] : use
+[Gerenciamento de Consulta] ..> [Agenda e disponibilidade] : use
+
+database "BD" {
+  [Base de dados]
+}
+
+[Relatorios e Analise de Dados] ..> [Base de dados] : atualiza/notifica
+[Relatorios e Analise de Dados] ..> [Gerenciamento de Usuario] : use
+[Relatorios e Analise de Dados] ..> [Agenda e disponibilidade] : use
+[Relatorios e Analise de Dados] ..> [Gerenciamento de Consulta] : use
+[Relatorios e Analise de Dados] ..> [Comunicacao e Notificacao] : use
+
+[Agenda e disponibilidade] ..> [Base de dados] : atualiza/notifica
+[Gerenciamento de Usuario] ..> [Base de dados]: atualiza/notifica
+[Gerenciamento de Consulta] ..> [Base de dados] : atualiza/notifica
+[Comunicacao e Notificacao] ..>  [Base de dados]: atualiza/notifica
+
+@enduml
