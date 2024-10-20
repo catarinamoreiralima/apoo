@@ -1,0 +1,45 @@
+PALESTRA 09/10
+
+Aprendizado de Máquina em Grafos
+
+- Inicio: Euler problema das pontes
+
+- Jacob Moreno e sociograma: modelou sistema social em grafos (crianças em uma escola e ligações de amizade)
+base de estudos sociais: cyberbullying
+
+- Grafos começaram a ser utilizados em modelagem mais complexas
+
+- Fake news / discurso de odio / cyberbullying
+
+- Grandes empresas: interações de funcionarios em redes sociais (ate mesmo interna) podem diagnosticar e atuar. 
+
+- Aprendizado de maquina: simula neuronio humano
+
+- Podemos colocar as redes neurais dentro de grafos: nos -> neuronios, vizinhos -> camadas
+
+- Graph Neural Networks GNN -> convolução -> GAT
+
+- Comunidades facebook c GNN
+
+- Identificação de fake news
+ 
+- Identificar coesao entre perfil publico de politico e como vota na camara
+ 
+ -Identificação de camara de eco: replicam e reforçam dentro do grupo a informação ou desinformação
+ 
+ 
+ 
+ 
+ **Palestra 09/10: Aprendizado de Máquina em Grafos**
+
+A palestra teve início com a menção ao problema das pontes de Euler, um dos primeiros desafios resolvidos utilizando grafos, seguido por uma referência ao trabalho de Jacob Moreno com o sociograma, que modelou o sistema social de crianças em uma escola usando grafos para representar as ligações de amizade. Esse modelo se tornou a base de muitos estudos sociais, sendo aplicado, por exemplo, na análise de fenômenos como o cyberbullying.
+
+A partir dessas aplicações iniciais, os grafos passaram a ser utilizados em contextos mais complexos, como no monitoramento de fake news, discursos de ódio e comportamentos abusivos nas redes. Grandes empresas, por exemplo, já analisam as interações de seus funcionários em redes sociais — internas ou externas — para diagnosticar problemas e implementar intervenções.
+
+No campo do aprendizado de máquina, foi abordado como os grafos podem ser integrados com redes neurais artificiais. Assim como um neurônio simula a interação de células cerebrais, as redes neurais também podem ser representadas dentro de grafos. Nesse contexto, os nós de um grafo correspondem a neurônios, enquanto as conexões entre vizinhos representam as camadas da rede neural.
+
+Um dos principais modelos citados foi o de Redes Neurais em Grafos (Graph Neural Networks – GNN), que utiliza operações de convolução e técnicas como Graph Attention Networks (GAT) para analisar estruturas complexas. Essas técnicas têm sido aplicadas em várias situações, como na análise de comunidades no Facebook, na identificação de fake news e na detecção de câmaras de eco — grupos onde as informações são replicadas e reforçadas entre os membros, promovendo uma visão enviesada da realidade.
+
+Outro exemplo de aplicação mencionado foi o uso de GNNs para identificar a coerência entre o discurso público de um político e seu comportamento no congresso, cruzando informações de perfil público com padrões de votação, o que ajuda a mapear a consistência de suas posições políticas.
+
+Com o avanço das técnicas de aprendizado de máquina em grafos, as possibilidades de análise e atuação sobre interações sociais e fluxos de informação se tornam cada vez mais amplas, prometendo avanços significativos tanto em pesquisas acadêmicas quanto em aplicações práticas.

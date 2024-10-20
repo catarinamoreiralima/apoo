@@ -1,0 +1,76 @@
+@startuml 
+
+abstract class Usuario {
+  - nome: str
+  - email: str
+  - telefone: str
+  - senha: str
+  - cpf: str
+}
+
+class Paciente {
+  - data_nascimento: date
+  - numero_USP: str
+  + marcar_consulta(horario: Horario): Consulta
+  + cancelar_consulta(consulta: Consulta): void
+  + verificar_consultas(): List[Horario]
+}
+
+class Psicologo {
+  - registro_profissional: str
+  - abordagem: str
+  + verificar_horarios(): List[Horario]
+  + marcar_paciente(paciente: Paciente, horario: Horario): Consulta
+  + desmarcar_paciente(paciente: Paciente, horario: Horario): Consulta
+  + verificar_horarios_disponiveis(): List[Horario]
+  + verificar_horarios_marcados(): List[Horario]
+}
+
+class Consulta {
+  - paciente: Paciente
+  - psicologo: Psicologo
+  - horario: Horario
+  - status: str
+  + cancelar(): void
+  + confirmar(): void
+  + realizar(): void
+}
+
+class Horario {
+  - data: date
+  - hora_inicio: time
+  - hora_fim: time
+  - disponivel: bool
+  + reservar(paciente: Paciente, psicologo: Psicologo): Consulta
+  + liberar(): void
+}
+
+class Agenda {
+  - psicologo: Psicologo
+  - horarios: List[Horario]
+  + adicionar_horario(horario: Horario): void
+  + remover_horario(horario: Horario): void
+  + listar_horarios_disponiveis(): List[Horario]
+}
+
+class Administrador {
+  - nome: str
+  - email: str
+  - senha: str
+  - cargo: str
+  + extrair_relatorio_consultas(data_inicio: date, data_fim: date): List[Consulta]
+  + extrair_relatorio_psicologos(): List[Psicologo]
+  + extrair_relatorio_pacientes(): List[Paciente]
+  + gerenciar_usuarios(): void
+  + gerenciar_horarios(): void
+}
+
+Usuario <|-- Paciente
+Usuario <|-- Psicologo
+Paciente --> "0..*" Consulta 
+Psicologo --> "0..*" Consulta
+Psicologo --> "1..1" Agenda
+Agenda --> "1..*" Horario
+
+
+@enduml
