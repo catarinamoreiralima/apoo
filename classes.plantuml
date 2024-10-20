@@ -54,9 +54,6 @@ class Agenda {
 }
 
 class Administrador {
-  - nome: str
-  - email: str
-  - senha: str
   - cargo: str
   + extrair_relatorio_consultas(data_inicio: date, data_fim: date): List[Consulta]
   + extrair_relatorio_psicologos(): List[Psicologo]
@@ -67,6 +64,7 @@ class Administrador {
 
 Usuario <|-- Paciente
 Usuario <|-- Psicologo
+Usuario <|-- Administrador
 Paciente --> "0..*" Consulta 
 Psicologo --> "0..*" Consulta
 Psicologo --> "1..1" Agenda
