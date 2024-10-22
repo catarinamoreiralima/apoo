@@ -1,22 +1,36 @@
 @startuml componentes
 
-[Gerenciamento de Consulta] ..> [Comunicacao e Notificacao] : use
-[Agenda e disponibilidade] ..> [Gerenciamento de Usuario] : use
-[Gerenciamento de Consulta] ..> [Agenda e disponibilidade] : use
+skinparam component {
+  backgroundColor<<comp 1>> LightBlue
+  backgroundColor<<comp 2>> LightGreen
+  backgroundColor<<comp 3>> LightPink
+  backgroundColor<<comp 4>> Orchid
+}
+[Gerenciamento de Consultas] <<comp 1>>
+[Gerenciamento de Pacientes] <<comp 2>>
+[Cadastro e Acesso de Usuários] <<comp 3>>
+[Administração da Plataforma] <<comp 4>>
+
+
+[Gerenciamento de Consultas] ..> [Gerenciamento de Pacientes] : use
+[Gerenciamento de Pacientes] ..> [Cadastro e Acesso de Usuários] : use
+
+[Administração da Plataforma] ..> [Gerenciamento de Consultas] : use
+[Administração da Plataforma] ..> [Gerenciamento de Pacientes] : use
+[Administração da Plataforma] ..> [Cadastro e Acesso de Usuários] : use
+
+
+[Gerenciamento de Pacientes] ..> [Componente de Acesso a Dados do Usuário] : use
+[Cadastro e Acesso de Usuários] ..> [Componente de Acesso a Dados do Usuário] :use
+
+[Gerenciamento de Consultas] ..> [Componente de Acesso a DB de Agenda] : use
 
 database "BD" {
-  [Base de dados]
+  [Base de dados Usuário]
+  [Base de dados Agenda]
 }
 
-[Relatorios e Analise de Dados] ..> [Base de dados] : atualiza/notifica
-[Relatorios e Analise de Dados] ..> [Gerenciamento de Usuario] : use
-[Relatorios e Analise de Dados] ..> [Agenda e disponibilidade] : use
-[Relatorios e Analise de Dados] ..> [Gerenciamento de Consulta] : use
-[Relatorios e Analise de Dados] ..> [Comunicacao e Notificacao] : use
+[Componente de Acesso a Dados do Usuário] ..> [Base de dados Usuário] : use
+[Componente de Acesso a DB de Agenda] ..> [Base de dados Agenda] : use
 
-[Agenda e disponibilidade] ..> [Base de dados] : atualiza/notifica
-[Gerenciamento de Usuario] ..> [Base de dados]: atualiza/notifica
-[Gerenciamento de Consulta] ..> [Base de dados] : atualiza/notifica
-[Comunicacao e Notificacao] ..>  [Base de dados]: atualiza/notifica
 
-@enduml

@@ -2,22 +2,22 @@
 
 abstract class Usuario {
   - nome: str
-  - email: str
-  - telefone: str
-  - senha: str
-  - cpf: str
+  # email: str
+  # telefone: str
+  # senha: str
+  # cpf: str
 }
 
 class Paciente {
   - data_nascimento: date
-  - numero_USP: str
+  # numero_USP: str
   + marcar_consulta(horario: Horario): Consulta
   + cancelar_consulta(consulta: Consulta): void
   + verificar_consultas(): List[Horario]
 }
 
 class Psicologo {
-  - registro_profissional: str
+  # registro_profissional: str
   - abordagem: str
   + verificar_horarios(): List[Horario]
   + marcar_paciente(paciente: Paciente, horario: Horario): Consulta
