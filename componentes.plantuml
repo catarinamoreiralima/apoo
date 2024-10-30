@@ -1,36 +1,50 @@
-@startuml componentes
+@startuml mvc_diagram
 
 skinparam component {
-  backgroundColor<<comp 1>> LightBlue
-  backgroundColor<<comp 2>> LightGreen
-  backgroundColor<<comp 3>> LightPink
-  backgroundColor<<comp 4>> Orchid
+  backgroundColor<<consultas>> LightBlue
+  backgroundColor<<pacientes>> LightGreen
+  backgroundColor<<usuarios>> LightPink
+  backgroundColor<<administracao>> Orchid
+  backgroundColor<<model>> LightGray
+  backgroundColor<<database>> Thistle
 }
-[Gerenciamento de Consultas] <<comp 1>>
-[Gerenciamento de Pacientes] <<comp 2>>
-[Cadastro e Acesso de Usuários] <<comp 3>>
-[Administração da Plataforma] <<comp 4>>
 
+package "View" {
+  [<<view>> Gerenciamento de Consultas] <<consultas>>
+  [<<view>> Gerenciamento de Pacientes] <<pacientes>>
+  [<<view>> Cadastro e Acesso de Usuários] <<usuarios>>
+  [<<view>> Administração da Plataforma] <<administracao>>
+}
 
-[Gerenciamento de Consultas] ..> [Gerenciamento de Pacientes] : use
-[Gerenciamento de Pacientes] ..> [Cadastro e Acesso de Usuários] : use
+package "Controller" {
+  [<<controller>> Gerenciamento de Consultas] <<consultas>>
+  [<<controller>> Gerenciamento de Pacientes] <<pacientes>>
+  [<<controller>> Cadastro e Acesso de Usuários] <<usuarios>>
+  [<<controller>> Administração da Plataforma] <<administracao>>
+}
 
-[Administração da Plataforma] ..> [Gerenciamento de Consultas] : use
-[Administração da Plataforma] ..> [Gerenciamento de Pacientes] : use
-[Administração da Plataforma] ..> [Cadastro e Acesso de Usuários] : use
+package "Model" <<model>> {
+  [Componente de Acesso a Dados do Usuário]
+  [Componente de Acesso a DB de Agenda]
+}
 
-
-[Gerenciamento de Pacientes] ..> [Componente de Acesso a Dados do Usuário] : use
-[Cadastro e Acesso de Usuários] ..> [Componente de Acesso a Dados do Usuário] :use
-
-[Gerenciamento de Consultas] ..> [Componente de Acesso a DB de Agenda] : use
-
-database "BD" {
+database "BD" <<database>> {
   [Base de dados Usuário]
   [Base de dados Agenda]
 }
 
-[Componente de Acesso a Dados do Usuário] ..> [Base de dados Usuário] : use
-[Componente de Acesso a DB de Agenda] ..> [Base de dados Agenda] : use
+' Posicionamento dos pacotes para alinhar horizontalmente
+View -[hidden]-> Controller
+Controller -[hidden]-> Model
+Model -[hidden]-> BD
 
+' Relacionamentos entre packages
+View --> Controller : aciona
+Controller --> View : atualiza
+Controller --> Model : atualiza
+Model --> Controller : notifica
 
+' Relacionamento entre Model e Banco de Dados
+Model <--> BD : CRUD acessa
+
+@enduml
