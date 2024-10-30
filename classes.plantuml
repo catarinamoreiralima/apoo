@@ -1,4 +1,4 @@
-@startuml 
+@startuml classes
 
 abstract class Usuario {
   - nome: str
@@ -8,22 +8,16 @@ abstract class Usuario {
   # cpf: str
 }
 
+
 class Paciente {
   - data_nascimento: date
   # numero_USP: str
-  + marcar_consulta(horario: Horario): Consulta
-  + cancelar_consulta(consulta: Consulta): void
-  + verificar_consultas(): List[Horario]
+ 
 }
 
 class Psicologo {
   # registro_profissional: str
   - abordagem: str
-  + verificar_horarios(): List[Horario]
-  + marcar_paciente(paciente: Paciente, horario: Horario): Consulta
-  + desmarcar_paciente(paciente: Paciente, horario: Horario): Consulta
-  + verificar_horarios_disponiveis(): List[Horario]
-  + verificar_horarios_marcados(): List[Horario]
 }
 
 class Consulta {
@@ -31,35 +25,58 @@ class Consulta {
   - psicologo: Psicologo
   - horario: Horario
   - status: str
-  + cancelar(): void
-  + confirmar(): void
-  + realizar(): void
 }
 
 class Horario {
-  - data: date
-  - hora_inicio: time
-  - hora_fim: time
+  - data: int
+  - dia_semana: DiaSemana
+  - mes: Mes
+  - hora_inicio: Hora
+  - hora_fim: Hora
   - disponivel: bool
-  + reservar(paciente: Paciente, psicologo: Psicologo): Consulta
-  + liberar(): void
+  
 }
 
-class Agenda {
-  - psicologo: Psicologo
-  - horarios: List[Horario]
-  + adicionar_horario(horario: Horario): void
-  + remover_horario(horario: Horario): void
-  + listar_horarios_disponiveis(): List[Horario]
+enum DiaSemana {
+  SEGUNDA,
+  TERCA,
+  QUARTA,
+  QUINTA,
+  SEXTA
+}
+
+enum Mes {
+  JANEIRO,
+  FEVEREIRO,
+  MARCO,
+  ABRIL,
+  MAIO,
+  JUNHO,
+  JULHO,
+  AGOSTO,
+  SETEMBRO,
+  OUTUBRO,
+  NOVEMBRO,
+  DEZEMBRO
+}
+
+enum Hora {
+  H08_00,
+  H09_00,
+  H10_00,
+  H11_00,
+  H12_00,
+  H13_00,
+  H14_00,
+  H15_00,
+  H16_00,
+  H17_00,
+  H18_00,
+  H19_00
 }
 
 class Administrador {
   - cargo: str
-  + extrair_relatorio_consultas(data_inicio: date, data_fim: date): List[Consulta]
-  + extrair_relatorio_psicologos(): List[Psicologo]
-  + extrair_relatorio_pacientes(): List[Paciente]
-  + gerenciar_usuarios(): void
-  + gerenciar_horarios(): void
 }
 
 Usuario <|-- Paciente
@@ -67,8 +84,6 @@ Usuario <|-- Psicologo
 Usuario <|-- Administrador
 Paciente --> "0..*" Consulta 
 Psicologo --> "0..*" Consulta
-Psicologo --> "1..1" Agenda
-Agenda --> "1..*" Horario
-
+Consulta --> "1..1" Horario
 
 @enduml

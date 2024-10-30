@@ -1,0 +1,24 @@
+Palestra 30/10
+
+- sincronismo em redes complexas.
+
+-comparação entre propagação da peste bubonica e h1n1: mudou a topologia da rede e com isso aumentou a taxa de infecção
+
+-estudo das epidemias com modelo de bernoulli
+
+-estado suscetivel, infectado ou recuperado (imune)
+
+-cadeias de markov: duas abordagens -> contato: 1 conexao por vez
+reativo: matriz de conexão
+
+-problema falsa causalidade: confundir correlação com causalidade
+
+-series temporais multivariadas com causalidade
+
+- diagnostico de transtorno mental utilizando redes e aprendizagem de maquina rede bayesiana e arvore de decisao
+
+- tranfer learning: treino da rede com outras doenças infecciosas e aplicadas ao covid
+
+- conexao da cárie com doenças futuras
+
+
