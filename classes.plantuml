@@ -82,8 +82,8 @@ class Administrador {
 Usuario <|-- Paciente
 Usuario <|-- Psicologo
 Usuario <|-- Administrador
-Paciente --> "0..*" Consulta 
-Psicologo --> "0..*" Consulta
-Consulta --> "1..1" Horario
+Paciente --> "0..*" Consulta : possui
+Psicologo --> "0..*" Consulta : possui
+Consulta --> "1..1" Horario : possui
 
 @enduml
