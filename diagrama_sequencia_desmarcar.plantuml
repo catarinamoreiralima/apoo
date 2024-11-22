@@ -1,0 +1,38 @@
+Utilize como base o código abaixo:
+Código do Plant UML:
+@startuml
+box "Desmarcar Consulta" 
+    actor Usuário
+    boundary "Interface de Login" as Login
+    control "Controlador Agenda/Consultas" as Controlador
+    participant ":Login" as ModuloLogin
+    participant ":Desmarcar_consulta" as Modulo
+
+    == Fluxo Principal ==
+    Usuário -> Login : E-mail
+    Usuário -> Login : Senha
+    Login -> ModuloLogin : Validar credenciais
+    ModuloLogin --> Login : Credenciais válidas?
+    
+    alt Recuperação de senha necessária
+        Usuário -> Login : Solicitação de recuperação de senha
+        Login -> ModuloLogin : Recuperar senha
+        ModuloLogin --> Login : Link de recuperação enviado
+    else Login bem-sucedido
+        Login -> Controlador : ID da conta
+        Controlador -> Modulo : validar_ID(string)
+        Modulo --> Controlador : Verdadeiro(string)
+
+        Controlador -> Modulo : verificar_horario_marcado(int, ID)
+        Modulo --> Controlador : Horário válido?
+
+        alt Horário válido
+            Controlador -> Modulo : Desmarcar_consulta(int)
+            Modulo --> Controlador : Verdadeiro(int)
+            Controlador -> Usuário : Confirmação da consulta desmarcada
+        else Horário inválido
+            Controlador -> Usuário : Mensagem: "Nenhuma consulta marcada neste horário"
+        end
+    end
+end box
+@enduml

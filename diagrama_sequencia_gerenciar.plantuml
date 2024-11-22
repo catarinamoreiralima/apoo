@@ -1,0 +1,50 @@
+@startuml
+box "Gerenciar Consultas" 
+    actor Usuário
+    boundary "Interface de Login" as Login
+    participant ":Login" as ModuloLogin
+    control "Controlador de Consultas" as Controlador
+    participant ":Marcar Consulta" as ModuloMarcar
+    participant ":Remarcar Consulta" as ModuloRemarcar
+    participant ":Desmarcar_consulta" as ModuloDesmarcar
+
+    == Fluxo Principal ==
+    Usuário -> Login : E-mail
+    Usuário -> Login : Senha
+    Login -> ModuloLogin : Validar credenciais
+    ModuloLogin --> Login : Credenciais válidas?
+    
+    alt Recuperação de senha necessária
+        Usuário -> Login : Solicitação de recuperação de senha
+        Login -> ModuloLogin : Recuperar senha
+        ModuloLogin --> Login : Link de recuperação enviado
+    else Login bem-sucedido
+        Login -> Controlador : validar_ID(string)
+        Controlador --> Login : Verdadeiro(string)
+
+        Controlador -> ModuloMarcar : verificar_horario_disponivel(int, IDPaciente, IDProfissional)
+        ModuloMarcar --> Controlador : Horário válido?
+
+        Controlador -> ModuloRemarcar : verificar_horario_marcado(int, IDPaciente, IDProfissional)
+        ModuloRemarcar --> Controlador : Horário válido?
+
+        Controlador -> ModuloDesmarcar : verificar_horario_marcado(int, IDPaciente, IDProfissional)
+        ModuloDesmarcar --> Controlador : Horário válido?
+
+        alt Horário válido
+
+            ref over ModuloMarcar : Marcar Consulta
+            Controlador -> ModuloMarcar : Realizar marcação
+
+            ref over ModuloRemarcar : Remarcar Consulta
+            Controlador -> ModuloRemarcar : Realizar remarcação
+
+            ref over ModuloDesmarcar : Desmarcar consulta
+            Controlador -> ModuloDesmarcar : Realizar desmarcação
+
+        else Horário inválido
+            Controlador -> Usuário : Mensagem: "Nenhum horário válido para consulta"
+        end
+    end
+end box
+@enduml
