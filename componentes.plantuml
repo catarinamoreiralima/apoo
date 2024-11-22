@@ -9,16 +9,21 @@ skinparam component {
   backgroundColor<<database>> Thistle
 }
 
+skinparam Arrow {
+  Padding 10
+  Thickness 2
+}
+
 package "View" {
   [<<view>> Gerenciamento de Consultas] <<consultas>>
-  [<<view>> Gerenciamento de Pacientes] <<pacientes>>
+  [<<view>> Acesso a Informações de Pacientes e Psicólogos] <<pacientes>>
   [<<view>> Cadastro e Acesso de Usuários] <<usuarios>>
   [<<view>> Administração da Plataforma] <<administracao>>
 }
 
 package "Controller" {
   [<<controller>> Gerenciamento de Consultas] <<consultas>>
-  [<<controller>> Gerenciamento de Pacientes] <<pacientes>>
+  [<<controller>> Acesso a Informações de Pacientes e Psicólogos] <<pacientes>>
   [<<controller>> Cadastro e Acesso de Usuários] <<usuarios>>
   [<<controller>> Administração da Plataforma] <<administracao>>
 }
@@ -38,13 +43,11 @@ View -[hidden]-> Controller
 Controller -[hidden]-> Model
 Model -[hidden]-> BD
 
-' Relacionamentos entre packages
+' Relacionamentos entre packages com setas ajustadas
 View --> Controller : aciona
 Controller --> View : atualiza
 Controller --> Model : atualiza
 Model --> Controller : notifica
-
-' Relacionamento entre Model e Banco de Dados
 Model <--> BD : CRUD acessa
 
 @enduml
