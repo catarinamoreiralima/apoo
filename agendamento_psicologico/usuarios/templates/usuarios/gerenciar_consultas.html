@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Consultas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/gerenciar_consultas.css' %}"> <!-- Link para o CSS específico de Gerenciar Consultas -->
+</head>
+<body>
+    <!-- Barra lateral -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo clicável que leva ao Dashboard -->
+        <div class="logo">
+            <a href="{% url 'dashboard' %}"> <!-- Redireciona para o dashboard -->
+                <img src="{% static 'images/logo.png' %}" alt="Logo" />
+            </a>
+        </div>
+
+        <!-- Botões de navegação -->
+        <div class="sidebar-links">
+            <a href="{% url 'configurar_perfil' %}">Configurar Perfil</a>
+            <a href="{% url 'gerenciar_consultas' %}" class="active">Gerenciar Consultas</a> <!-- Indicação de aba ativa -->
+        </div>
+
+        <!-- Botão de "Sair" no final da barra lateral -->
+        <div class="logout-btn">
+            <a href="{% url 'logout' %}">
+                <img src="{% static 'images/exit-icon.png' %}" alt="Sair">
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <h2>Gerenciar Consultas</h2>
+
+        <!-- Informações do usuário -->
+        <div class="consultas-info">
+            <h3>Informações de suas Consultas</h3>
+            <p><strong>Total de Consultas Marcadas:</strong> 5</p>
+            <ul>
+                <li><strong>Data:</strong> 12/12/2024 - <strong>Horário:</strong> 10:00 AM</li>
+                <li><strong>Data:</strong> 15/12/2024 - <strong>Horário:</strong> 02:00 PM</li>
+                <!-- Exemplo de consulta, adicionar mais conforme o banco de dados -->
+            </ul>
+        </div>
+
+        <!-- Botões de ações -->
+        <div class="action-buttons">
+            <button class="btn-orange">Marcar Consulta</button>
+            <button class="btn-orange">Desmarcar Consulta</button>
+            <button class="btn-orange">Remarcar Consulta</button>
+        </div>
+
+        <div>
+            <p>Suas consultas estarão aqui.</p>
+        </div>
+    </div>
+
+    <script>
+        // Função para verificar o tamanho da tela e ajustar a barra lateral
+        window.addEventListener("resize", function() {
+            adjustSidebar();
+        });
+
+        function adjustSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        }
+
+        adjustSidebar(); // Chama ao carregar a página
+    </script>
+</body>
+</html>

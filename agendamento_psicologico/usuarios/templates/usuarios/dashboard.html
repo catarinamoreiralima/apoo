@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> <!-- Link para o arquivo CSS -->
+</head>
+<body>
+    <!-- Barra lateral -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo clicável que leva ao Dashboard -->
+        <div class="logo">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" />
+            </a>
+        </div>
+
+        <!-- Botões de navegação -->
+        <div class="sidebar-links">
+            <a href="{% url 'configurar_perfil' %}">Configurar Perfil</a>
+            <a href="{% url 'gerenciar_consultas' %}">Gerenciar Consultas</a>
+        </div>
+
+        <!-- Botão de Sair (com imagem de logo) -->
+        <div class="logout-container">
+            <a href="{% url 'logout' %}" class="logout">
+                <img src="{% static 'images/exit-icon.png' %}" alt="Sair">
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <h2>Bem-vindo ao seu Dashboard</h2>
+        <p>Você está logado!</p>
+    </div>
+
+    <script>
+        window.addEventListener("resize", function() {
+            adjustSidebar();
+        });
+
+        function adjustSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed'); // Recolhe a barra lateral em telas pequenas
+            } else {
+                sidebar.classList.remove('collapsed'); // Expande a barra lateral em telas grandes
+            }
+        }
+
+        // Inicializa a barra lateral ao carregar a página
+        adjustSidebar();
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+/* Reseta alguns estilos padrões do navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos gerais do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    overflow-x: hidden; /* Impede rolagem horizontal */
+}
+
+/* Estilos da barra lateral */
+.sidebar {
+    width: 250px; /* Largura da barra lateral quando expandida */
+    background-color: #008CBA; /* Cor de fundo da barra lateral */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px 10px;
+    transition: width 0.3s ease; /* Transição suave */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Garante que o conteúdo e o botão de logout fiquem nas extremidades */
+    z-index: 1000; /* Garante que a barra lateral fique acima de outros elementos */
+}
+
+.sidebar.collapsed {
+    width: 60px; /* Largura da barra lateral quando recolhida */
+}
+
+/* Logo clicável */
+.logo a {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px; /* Espaço abaixo da logo */
+}
+
+.logo img {
+    width: 40px; /* Tamanho da logo */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centraliza a imagem */
+}
+
+/* Estilo dos links da barra lateral */
+.sidebar-links a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.sidebar-links a:hover {
+    background-color: #007b8f; /* Cor ao passar o mouse */
+}
+
+.sidebar-links a.active {
+    background-color: #005f6b; /* Cor para o link ativo */
+}
+
+/* Estilo do botão de logout com imagem */
+.logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: auto; /* Isso garante que o botão fique no final da barra lateral */
+    padding-bottom: 20px; /* Espaço no final da barra */
+}
+
+.logout {
+    display: block;
+    background-color: transparent; /* Fundo transparente */
+    padding: 12px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.logout img {
+    width: 30px; /* Ajusta o tamanho da imagem */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logout:hover {
+    background-color: #d9534f; /* Cor de fundo mais escura no hover */
+}
+
+/* Efeito de hover para a imagem */
+.logout:hover img {
+    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+}
+
+/* Mensagem de sucesso */
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 1100; /* Acima da barra lateral */
+}
+
+/* Conteúdo principal */
+.main-content {
+    margin-left: 250px; /* Mesmo valor da largura da barra lateral */
+    padding: 20px;
+    width: calc(100% - 250px); /* Ajusta a largura para considerar a barra lateral */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative; /* Para posicionar a mensagem dentro deste contexto */
+}
+
+/* Container de perfil */
+.profile-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.profile-container h2 {
+    color: #008CBA; /* Azul */
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 32px;
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha todos os campos ao centro */
+    width: 100%;
+}
+
+/* Foto de perfil */
+.profile-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-bottom: 10px; /* Espaço entre a imagem e o input */
+}
+
+.profile-photo input[type="file"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Campos do perfil */
+.profile-field {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza as labels */
+}
+
+.profile-field label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+}
+
+.profile-field input,
+.profile-field textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.profile-field textarea {
+    resize: vertical; /* Permite redimensionamento vertical do textarea */
+    height: 100px; /* Altura padrão para o textarea */
+}
+
+/* Botão Salvar Alterações */
+.save-button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background-color: #FFA500; /* Laranja */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #e69500;
+}
+
+/* Responsividade - Ajustes para telas pequenas */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Reduz a largura da barra lateral em telas pequenas */
+    }
+
+    .sidebar.collapsed {
+        width: 60px; /* Mantém a barra lateral recolhida */
+    }
+
+    .main-content {
+        margin-left: 200px; /* Atualiza a margem para a nova largura da sidebar */
+        width: calc(100% - 200px);
+        padding: 20px 10px;
+    }
+
+    .profile-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .profile-field label,
+    .profile-field input,
+    .profile-field textarea {
+        max-width: 100%;
+    }
+
+    .save-button {
+        width: 100%;
+    }
+
+    .profile-photo img {
+        width: 100px; /* Ajuste de tamanho da imagem para telas pequenas */
+        height: 100px;
+    }
+
+    .message {
+        width: 90%;
+        right: 5%;
+        left: 5%;
+    }
+}

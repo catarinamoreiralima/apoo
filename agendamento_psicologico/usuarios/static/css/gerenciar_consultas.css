@@ -1,0 +1,154 @@
+/* Estilos gerais do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Barra lateral */
+.sidebar {
+    width: 250px;
+    background-color: #008CBA;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px 10px;
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar .logo a {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar .logo img {
+    width: 40px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.sidebar-links a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-links a:hover {
+    background-color: #007b8f;
+}
+
+.sidebar-links a.active {
+    background-color: #006f7a; /* Destaque da aba ativa */
+}
+
+/* Estilo para o botão de logout (imagem) */
+.logout-btn {
+    position: absolute;
+    bottom: 20px; /* Alinha o botão no final da barra lateral */
+    left: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+.logout-btn a {
+    display: block;
+    padding: 12px;
+    background-color: transparent;
+    text-align: center;
+}
+
+.logout-btn img {
+    width: 30px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logout-btn:hover img {
+    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+}
+
+/* Estilo do conteúdo principal */
+.main-content {
+    margin-left: 250px;
+    padding: 40px;
+    flex-grow: 1;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo das informações de consultas */
+.consultas-info {
+    margin-bottom: 30px;
+}
+
+.consultas-info h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.consultas-info p {
+    font-size: 18px;
+}
+
+.consultas-info ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.consultas-info ul li {
+    margin-bottom: 10px;
+}
+
+/* Estilo dos botões de ação */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-orange {
+    background-color: #FFA500; /* Laranja */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-orange:hover {
+    background-color: #e69500;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar.collapsed {
+        width: 0px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Perfil</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/configurar_perfil.css' %}"> <!-- Link para o arquivo CSS de configurar perfil -->
+</head>
+<body>
+    <!-- Barra lateral -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo clicável que leva ao Dashboard -->
+        <div class="logo">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" />
+            </a>
+        </div>
+
+        <!-- Botões de navegação -->
+        <div class="sidebar-links">
+            <a href="{% url 'configurar_perfil' %}" class="active">Configurar Perfil</a>
+            <a href="{% url 'gerenciar_consultas' %}">Gerenciar Consultas</a>
+        </div>
+
+        <!-- Botão de Sair -->
+        <div class="logout-container">
+            <a href="{% url 'logout' %}" class="logout">
+                <img src="{% static 'images/door-icon.png' %}" alt="Sair">
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="main-content">
+        <!-- Mensagem de sucesso -->
+        {% if messages %}
+            <div id="message" class="message success">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="profile-container">
+            <h2>Configurar Perfil</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="profile-photo">
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" alt="Foto de Perfil">
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="Foto de Perfil">
+                    {% endif %}
+                    <input type="file" name="photo">
+                </div>
+
+                <div class="profile-field">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" value="{{ user.username }}">
+                </div>
+
+                <div class="profile-field">
+                    <label for="nascimento">Data de Nascimento</label>
+                    <input type="date" id="nascimento" name="nascimento" value="{{ user.profile.birthdate }}">
+                </div>
+
+                <div class="profile-field">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" name="telefone" value="{{ user.profile.phone }}">
+                </div>
+
+                <div class="profile-field">
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" name="descricao">{{ user.profile.description }}</textarea>
+                </div>
+
+                <button type="submit" class="save-button">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Script para ajustamento da barra lateral
+        window.addEventListener("resize", function() {
+            adjustSidebar();
+        });
+
+        function adjustSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        }
+
+        adjustSidebar();
+
+        // Mostrar mensagem temporária
+        window.onload = function() {
+            const message = document.getElementById('message');
+            if (message) {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => { message.style.display = 'none'; }, 500);
+                }, 3000);
+            }
+        };
+    </script>
+</body>
+</html>
