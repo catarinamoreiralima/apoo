@@ -73,8 +73,8 @@ body {
 }
 
 .logout-btn img {
-    width: 30px;
-    height: auto;
+    width: 80px;
+    height: 50px;
     transition: transform 0.3s ease;
 }
 

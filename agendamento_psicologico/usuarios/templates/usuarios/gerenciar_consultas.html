@@ -26,7 +26,7 @@
         <!-- Botão de "Sair" no final da barra lateral -->
         <div class="logout-btn">
             <a href="{% url 'logout' %}">
-                <img src="{% static 'images/exit-icon.png' %}" alt="Sair">
+                <img src="{% static 'images/sair.png' %}" alt="Sair">
             </a>
         </div>
     </div>
@@ -48,7 +48,10 @@
 
         <!-- Botões de ações -->
         <div class="action-buttons">
-            <button class="btn-orange">Marcar Consulta</button>
+            <form method="POST" action="{% url 'marcar_consulta' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-orange">Marcar Consulta</button>
+            </form>
             <button class="btn-orange">Desmarcar Consulta</button>
             <button class="btn-orange">Remarcar Consulta</button>
         </div>

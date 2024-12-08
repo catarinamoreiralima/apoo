@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Gerenciar Consultas</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> <!-- Link para o arquivo CSS -->
+    <link rel="stylesheet" href="{% static 'css/marcar_consulta.css' %}"> <!-- Link para o CSS específico de Gerenciar Consultas -->
 </head>
 <body>
     <!-- Barra lateral -->
@@ -33,26 +33,7 @@
 
     <!-- Conteúdo principal -->
     <div class="main-content">
-        <h2>Bem-vindo ao seu Dashboard</h2>
-        <p>Você está logado!</p>
+        <h2>Vamos marcar uma Consulta!</h2>
     </div>
-
-    <script>
-        window.addEventListener("resize", function() {
-            adjustSidebar();
-        });
-
-        function adjustSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('collapsed'); // Recolhe a barra lateral em telas pequenas
-            } else {
-                sidebar.classList.remove('collapsed'); // Expande a barra lateral em telas grandes
-            }
-        }
-
-        // Inicializa a barra lateral ao carregar a página
-        adjustSidebar();
-    </script>
 </body>
 </html>

@@ -97,3 +97,9 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'usuarios/register.html', {'form': form})
+
+@login_required
+def marcar_consulta(request):
+    if request.method == 'POST':
+        return redirect('marcar_consulta.html') 
+    return render(request, 'usuarios/marcar_consulta.html')  

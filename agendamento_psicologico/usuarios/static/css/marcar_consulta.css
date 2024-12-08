@@ -1,0 +1,121 @@
+/* Reseta alguns estilos padrões do navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos gerais do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Estilos da barra lateral */
+.sidebar {
+    width: 250px; /* Largura da barra lateral quando expandida */
+    background-color: #008CBA; /* Cor de fundo da barra lateral */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 20px 10px;
+    transition: width 0.3s ease; /* Transição suave */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Isso vai garantir que o conteúdo e o botão de logout fiquem nas extremidades */
+}
+
+.sidebar.collapsed {
+    width: 60px; /* Largura da barra lateral quando recolhida */
+}
+
+/* Logo clicável */
+.logo a {
+    display: block;
+    text-align: center;
+    margin-bottom: 30px; /* Espaço abaixo da logo */
+}
+
+.logo img {
+    width: 40px; /* Tamanho da logo */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centraliza a imagem */
+}
+
+/* Estilo dos links da barra lateral */
+.sidebar-links a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-links a:hover {
+    background-color: #007b8f; /* Cor ao passar o mouse */
+}
+
+/* Estilo do botão de logout com imagem */
+.logout-container {
+    display: flex;
+    justify-content: center;
+    margin-top: auto; /* Isso garante que o botão fique no final da barra lateral */
+    padding-bottom: 20px; /* Espaço no final da barra */
+}
+
+.logout {
+    display: block;
+    background-color: transparent; /* Fundo transparente */
+    padding: 12px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.logout img {
+    width: 30px; /* Ajusta o tamanho da imagem */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logout:hover {
+    background-color: #d9534f; /* Cor de fundo mais escura no hover */
+}
+
+/* Efeito de hover para a imagem */
+.logout:hover img {
+    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+}
+
+/* Conteúdo principal */
+.main-content {
+    margin-left: 250px; /* Espaço reservado para a barra lateral */
+    padding: 40px;
+    flex-grow: 1;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividade - Ajustes para telas pequenas */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Reduz a largura da barra lateral em telas pequenas */
+    }
+
+    .sidebar.collapsed {
+        width: 0px; /* Quando a barra lateral está recolhida, ela ocupa 0px */
+    }
+
+    .main-content {
+        margin-left: 0; /* Quando a barra lateral estiver recolhida, ocupa toda a largura */
+    }
+}
