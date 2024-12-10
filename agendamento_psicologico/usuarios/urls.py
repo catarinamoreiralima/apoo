@@ -11,6 +11,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),  # URL do dashboard
     path('configurar_perfil/', views.configurar_perfil, name='configurar_perfil'),  # URL para configurar perfil
     path('gerenciar_consultas/', views.gerenciar_consultas, name='gerenciar_consultas'),  # URL para gerenciar consultas
+    path('marcar_consulta/', views.marcar_consulta, name='marcar_consulta'),  # URL para gerenciar consultas
     path('logout/', views.logout_view, name='logout'),  # URL para logout
     path('password_reset/', 
          auth_views.PasswordResetView.as_view(template_name='usuarios/password_reset.html'), 
