@@ -37,10 +37,6 @@ class Administrador (Usuario):
     cargo = models.CharField(max_length=100)
     
     
-class Consulta(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name="consultas")
-    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE, related_name="consultas")
-    
 
 class DiasDaSemana(Enum):
     SEGUNDA = "Segunda-feira"
@@ -111,3 +107,9 @@ class Horario(models.Model):
     
     def registrarHorario(self):
         self.save()
+
+
+class Consulta(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name="consultas")
+    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE, related_name="consultas")
+    horario = models.OneToOneField(Horario, on_delete=models.CASCADE, related_name="consulta")
