@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="static/css/login.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
             <div class="logo">
-                <img src="static/images/logo.png" alt="Logo" />
+                <img src="{% static 'images/logo.png' %}" alt="Logo" />
             </div>
             <h2>Entrar</h2>
             <form method="post">
-               
+                {% csrf_token %}
                 <div class="input-field">
                     <label for="username">Usuário</label>
                     <input type="text" id="username" name="username" required>
@@ -25,9 +26,9 @@
                 <button type="submit" class="login-button">Entrar</button>
             </form>
             <!-- Link de recuperação de senha -->
-            <a href="/usuarios/password_reset.html" class="forgot-password" target="">Esqueci minha senha</a>
+            <a href="/password_reset" class="forgot-password" target="">Esqueci minha senha</a>
             <!-- Botão de cadastro de usuário -->
-            <a href="register.html" class="register-button">Cadastrar Usuário</a>
+            <a href="/register" class="register-button">Cadastrar Usuário</a>
         </div>
     </div>
 </body>

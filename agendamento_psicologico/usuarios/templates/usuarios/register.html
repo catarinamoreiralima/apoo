@@ -1,23 +1,61 @@
 <!-- templates/usuarios/register.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Usuário</title>
     {% load static %}
-    <link rel="stylesheet" href="static/css/login.css"> 
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
             <div class="logo">
-                <img src="statis/images/logo.png" alt="Logo">
+                <img src="{% static 'images/logo.png' %}" alt="Logo">
             </div>
-            <h2>Cadastrar Usuário</h2>
+            <h2>Cadastrar Paciente</h2>
             <form method="post">
+                {% csrf_token %}
+                
+                <div class="input-field">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" id="telefone" name="telefone" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" name="cpf" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="data_nascimento">Data de Nascimento</label>
+                    <input type="date" id="data_nascimento" name="data_nascimento" required>
+                </div>
+
+                <div class="input-field">
+                    <label for="numero_usp">Número USP</label>
+                    <input type="text" id="numero_usp" name="numero_usp" required>
+                </div>
+
                 <button type="submit" class="register-button">Cadastrar</button>
             </form>
-            <a href="/usuarios/login.html" class="forgot-password">Já possui uma conta? Entrar</a>
+            <a href="{% url 'home' %}" class="forgot-password">Já possui uma conta? Entrar</a>
         </div>
     </div>
 </body>

@@ -112,6 +112,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Armazena as sessões no banco de dados
+SESSION_COOKIE_AGE = 1209600  # 2 semanas (em segundos)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expira ao fechar o navegador
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

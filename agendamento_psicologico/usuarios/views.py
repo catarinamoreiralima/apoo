@@ -7,23 +7,99 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import check_password
+from .utils import verificar_usuario
+from .models import Paciente
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Psicologo
+from django.http import HttpResponse
+
+def register_view(request):
+    if request.method == 'POST':
+        # Recupera os dados do formulário
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        senha = request.POST.get('senha')
+        cpf = request.POST.get('cpf')
+        data_nascimento = request.POST.get('data_nascimento')
+        numero_usp = request.POST.get('numero_usp')
+
+        # Cria um novo paciente
+        paciente = Paciente(
+            nome=nome,
+            email=email,
+            telefone=telefone,
+            senha=senha,
+            cpf=cpf,
+            data_nascimento=data_nascimento,
+            numero_usp=numero_usp
+        )
+
+        # Salva o paciente no banco de dados
+        paciente.registrarPaciente(request)
+
+        # Redireciona para a página de login ou dashboard
+        return redirect('dashboard')  # Redireciona para a página inicial (login)
+
+    return render(request, 'usuarios/register.html')
+
+""" from django.shortcuts import render
+from .forms import BaseUserForm, PsicologoForm, AlunoForm
+
+def register(request):
+    if request.method == "POST":
+        user_type = request.POST.get("user_type")
+        if user_type == "psicologo":
+            form = PsicologoForm(request.POST)
+        elif user_type == "aluno":
+            form = AlunoForm(request.POST)
+        else:
+            form = BaseUserForm(request.POST)
+
+        if form.is_valid():
+            # Processar o formulário (exemplo: salvar no banco de dados)
+            return render(request, "usuarios/register_success.html")
+
+    else:
+        form = BaseUserForm()
+
+    return render(request, "usuarios/register.html", {"form": form})
+ """
+
 
 # Classe personalizada para o Login
-class CustomLoginView(LoginView):
-    template_name = 'usuarios/login.html'  # Definindo o template personalizado
+def login_view(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
 
-    # Redirecionamento após o login bem-sucedido
-    def get_success_url(self):
-        return reverse_lazy('dashboard')  # Redireciona para o dashboard após login
+        # Verificar usuário
+        usuario, mensagem = verificar_usuario(email, senha)
+        if usuario:
+            # Login bem-sucedido: armazenar o ID do usuário na sessão
+            request.session['usuario_id'] = usuario.id
+            
+            # Redirecionar para a dashboard
+            return redirect('dashboard')  # Use o nome da URL da dashboard
+        else:
+            # Retornar mensagem de erro
+            return render(request, 'usuarios/login.html', {'erro': mensagem})
+    
+    # Renderizar a página de login
+    return render(request, 'usuarios/login.html')
 
 
 @login_required
 def dashboard(request):
-    """
-    View para o dashboard do usuário. 
-    Mostra opções como Configurar Perfil, Gerenciar Consultas e Logout.
-    """
-    return render(request, 'usuarios/dashboard.html')
+    
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        # Redirecionar para o login se o usuário não estiver autenticado
+        return redirect('login')
+
+    # Você pode buscar informações adicionais do usuário, se necessário
+    return render(request, 'usuarios/dashboard.html', {'usuario_id': usuario_id})
 
 
 @login_required
