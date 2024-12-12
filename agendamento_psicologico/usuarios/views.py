@@ -11,9 +11,12 @@ from django.contrib.auth.hashers import check_password
 from .utils import verificar_usuario
 from .models import Paciente
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Psicologo
+from .models import Psicologo, Horario
 from django.http import HttpResponse
 
+def dashboard(request):
+    return render(request, 'dashboard.html')
+    
 def register_view(request):
     if request.method == 'POST':
         # Recupera os dados do formulário
@@ -179,3 +182,57 @@ def marcar_consulta(request):
     if request.method == 'POST':
         return redirect('marcar_consulta.html') 
     return render(request, 'usuarios/marcar_consulta.html')  
+
+@login_required
+def listar_psicologos(request):
+    psicologos = Psicologo.objects.filter(horarios__disponivel=True).distinct()
+    return render(request, 'psicologos_list.html', {'psicologos': psicologos})
+
+@login_required
+def perfil_psicologo(request, psicologo_id):
+    psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    return render(request, 'perfil_psicologo.html', {'psicologo': psicologo})
+
+@login_required
+def calendario_psicologo(request, psicologo_id):
+    psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    horarios = psicologo.horarios.filter(disponivel=True)
+
+    # Obtenha os dias com horários disponíveis
+    dias_disponiveis = horarios.values_list('data', flat=True).distinct()
+
+    return render(request, 'calendario_psicologo.html', {
+        'psicologo': psicologo,
+        'dias_disponiveis': dias_disponiveis,
+    })
+
+@login_required
+def horarios_por_dia(request, psicologo_id, data):
+    psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    horarios = psicologo.horarios.filter(disponivel=True, data=data)
+
+    return JsonResponse({
+        'horarios': [
+            {'id': horario.id, 'hora_inicio': horario.hora_inicio, 'hora_fim': horario.hora_fim}
+            for horario in horarios
+        ]
+    })
+
+@login_required
+def confirmar_consulta(request, horario_id):
+    horario = get_object_or_404(Horario, id=horario_id, disponivel=True)
+    psicologo = horario.psicologo
+    paciente = request.user.paciente  # Assumindo que o usuário logado é um paciente
+
+    if request.method == 'POST':
+        # Salvar a consulta
+        Consulta.objects.create(paciente=paciente, psicologo=psicologo, horario=horario)
+
+        # Marcar o horário como indisponível
+        horario.disponivel = False
+        horario.save()
+
+        # Redirecionar para o dashboard
+        return redirect('dashboard')
+
+    return render(request, 'confirmar_consulta.html', {'horario': horario, 'psicologo': psicologo})

@@ -1,0 +1,9 @@
+<h1>Confirmar Consulta</h1>
+<p>Psicólogo: {{ psicologo.nome }}</p>
+<p>Horário: {{ horario.data }} - {{ horario.hora_inicio }} às {{ horario.hora_fim }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'calendario_psicologo' psicologo.id %}">Cancelar</a>

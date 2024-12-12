@@ -1,0 +1,9 @@
+<h1>Psicólogos Disponíveis</h1>
+<ul>
+    {% for psicologo in psicologos %}
+        <li>
+            <p>{{ psicologo.nome }} - {{ psicologo.abordagem }}</p>
+            <a href="{% url 'perfil_psicologo' psicologo.id %}">Visualizar Perfil</a>
+        </li>
+    {% endfor %}
+</ul>

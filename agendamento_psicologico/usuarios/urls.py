@@ -26,4 +26,9 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='usuarios/password_reset_complete.html'), 
          name='password_reset_complete'),
     path('marcar_consulta.html', views.marcar_consulta, name='marcar_consulta'),
+    path('psicologos/', views.listar_psicologos, name='listar_psicologos'),
+    path('psicologos/<int:psicologo_id>/', views.perfil_psicologo, name='perfil_psicologo'),
+    path('psicologos/<int:psicologo_id>/calendario/', views.calendario_psicologo, name='calendario_psicologo'),
+    path('psicologos/<int:psicologo_id>/horarios/<str:data>/', views.horarios_por_dia, name='horarios_por_dia'),
+    path('confirmar/<int:horario_id>/', views.confirmar_consulta, name='confirmar_consulta'),
 ]

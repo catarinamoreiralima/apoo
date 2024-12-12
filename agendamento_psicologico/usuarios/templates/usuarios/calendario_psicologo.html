@@ -1,0 +1,34 @@
+<h1>Calendário de {{ psicologo.nome }}</h1>
+<div id="calendario">
+    <ul>
+        {% for dia in dias_disponiveis %}
+            <li>
+                <button class="dia-disponivel" onclick="selecionarDia('{{ dia }}')">
+                    {{ dia }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="horarios-disponiveis">
+    <!-- Aqui serão exibidos os horários -->
+</div>
+
+<script>
+function selecionarDia(data) {
+    fetch(`/psicologos/{{ psicologo.id }}/horarios/${data}/`)
+        .then(response => response.json())
+        .then(data => {
+            const horariosDiv = document.getElementById('horarios-disponiveis');
+            horariosDiv.innerHTML = ''; // Limpa a lista
+            data.horarios.forEach(horario => {
+                horariosDiv.innerHTML += `
+                    <button class="horario-disponivel" onclick="marcarHorario(${horario.id})">
+                        ${horario.hora_inicio} - ${horario.hora_fim}
+                    </button>
+                `;
+            });
+        });
+}
+</script>
