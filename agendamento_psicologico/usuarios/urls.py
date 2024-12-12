@@ -13,7 +13,7 @@ urlpatterns = [
     path('gerenciar_consultas.html', views.gerenciar_consultas, name='gerenciar_consultas'),  # URL para gerenciar consultas
     path('marcar_consulta.html', views.marcar_consulta, name='marcar_consulta'),  # URL para gerenciar consultas
     path('logout.html', views.logout_view, name='logout'),  # URL para logout
-    path('password_reset/', 
+    path('password_reset.html', 
          auth_views.PasswordResetView.as_view(template_name='usuarios/password_reset.html'), 
          name='password_reset'),
     path('password_reset/done/', 
