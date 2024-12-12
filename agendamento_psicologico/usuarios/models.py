@@ -8,7 +8,7 @@ from enum import Enum
 
 # Create your models here.
 class Usuario(models.Model):
-    nome = models.Charfield(max_length=100)
+    nome = models.CharField(max_length=100)
     email = models.EmailField(max_length=254)
     telefone = models.CharField(max_length=15)
     senha = models.CharField(max_length=20)

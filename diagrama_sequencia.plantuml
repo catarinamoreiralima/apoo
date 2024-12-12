@@ -1,0 +1,52 @@
+@startuml
+
+actor       Usuário       as Foo1
+boundary    "Interface de Login"    as Foo2
+participant ":Login"     as Foo3
+entity      "Controlador de Agenda/Consultas"      as Foo4
+participant ":Marcar Consulta"     as Foo5
+participant ":Cadastro" as Foo6
+
+Foo1 -> Foo2 : e-mail
+Foo1 -> Foo2 : senha
+Foo2 -> Foo3 : Validar credenciais
+Foo2 <-- Foo3 : Credenciais Validas?
+
+
+alt login valido
+
+    Foo3 -> Foo4: id da conta
+    Foo4 -> Foo5 : verifica_usuario(string)
+    Foo5 --> Foo4 : role(string)
+    alt  usuário é paciente
+        Foo4 -> Foo5 : get_psicologos
+        Foo5 --> Foo4 : psicologos(list)
+    end
+
+    Foo4 -> Foo5 : get_horarios_disponiveis(ID_psicologo)
+        
+
+        alt existe horario disponivel
+            Foo5 --> Foo4 : horarios(list)
+            Foo4 -> Foo5 : reserva_horario(ID_paciente, ID_psicologo, horario)
+            Foo5 --> Foo4 : ok
+        else não existe horário disponível
+            Foo5 --> Foo4 : "sem horários disponíveis"
+        end
+
+else perda de senha
+
+Foo1 -> Foo2: Solicitação de recuperação de senha
+
+
+Foo2 --> Foo1: link de recuperação
+
+
+
+else usuário não cadastrado
+
+Foo1 -> Foo6 : email
+    
+    end
+
+@enduml

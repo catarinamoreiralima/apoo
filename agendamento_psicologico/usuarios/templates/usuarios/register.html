@@ -5,21 +5,19 @@
     <meta charset="UTF-8">
     <title>Cadastrar Usuário</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}"> <!-- Reutiliza o mesmo CSS -->
+    <link rel="stylesheet" href="css/login.css"> 
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
             <div class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="Logo">
+                <img src="images/logo.png" alt="Logo">
             </div>
             <h2>Cadastrar Usuário</h2>
             <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
                 <button type="submit" class="register-button">Cadastrar</button>
             </form>
-            <a href="{% url 'login' %}" class="forgot-password">Já possui uma conta? Entrar</a>
+            <a href="/usuarios/login.html" class="forgot-password">Já possui uma conta? Entrar</a>
         </div>
     </div>
 </body>
