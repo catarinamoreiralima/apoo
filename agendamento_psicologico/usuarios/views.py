@@ -9,14 +9,11 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import check_password
 from .utils import verificar_usuario
-from .models import Paciente
+from .models import Paciente, Usuario
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Psicologo, Horario
 from django.http import HttpResponse
 
-def dashboard(request):
-    return render(request, 'dashboard.html')
-    
 def register_view(request):
     if request.method == 'POST':
         # Recupera os dados do formulário
@@ -79,10 +76,13 @@ def login_view(request):
 
         # Verificar usuário
         usuario, mensagem = verificar_usuario(email, senha)
+        print(usuario)
+        print(mensagem)
         if usuario:
             # Login bem-sucedido: armazenar o ID do usuário na sessão
             request.session['usuario_id'] = usuario.id
-            
+            print(f"Email recebido: {email}")  # Debug: imprime o email recebido
+            print(f"Senha recebida: {senha}")  # Debug: imprime a senha recebida
             # Redirecionar para a dashboard
             return redirect('dashboard')  # Use o nome da URL da dashboard
         else:
@@ -92,19 +92,23 @@ def login_view(request):
     # Renderizar a página de login
     return render(request, 'usuarios/login.html')
 
-
 @login_required
 def dashboard(request):
-    
     usuario_id = request.session.get('usuario_id')
+
     if not usuario_id:
-        # Redirecionar para o login se o usuário não estiver autenticado
+        # Se não há usuário logado, redirecionar para a página de login
+        return redirect('login')  # Use o nome da URL do login
+
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=usuario_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
         return redirect('login')
 
-    # Você pode buscar informações adicionais do usuário, se necessário
-    return render(request, 'usuarios/dashboard.html', {'usuario_id': usuario_id})
-
-
+    # Renderizar a dashboard com informações do usuário
+    return render(request, 'usuarios/dashboard.html', {'usuario': usuario})
 @login_required
 def configurar_perfil(request):
     """
@@ -136,7 +140,7 @@ def configurar_perfil(request):
     return render(request, 'usuarios/configurar_perfil.html')
 
 
-@login_required
+#@login_required
 def gerenciar_consultas(request):
     """
     View para gerenciar consultas.
@@ -185,7 +189,7 @@ def marcar_consulta(request):
 
 @login_required
 def listar_psicologos(request):
-    psicologos = Psicologo.objects.filter(horarios__disponivel=True).distinct()
+    psicologos = Psicologo.objects.distinct()
     return render(request, 'psicologos_list.html', {'psicologos': psicologos})
 
 @login_required

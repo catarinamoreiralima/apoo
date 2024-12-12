@@ -5,23 +5,25 @@ from django.forms import CharField, Field
 from django.utils import timezone
 import datetime
 from enum import Enum
+from django.contrib.auth.hashers import make_password
 
 # Create your models here.
 class Usuario(models.Model):
     nome = models.CharField(max_length=100)
     email = models.EmailField(max_length=254)
     telefone = models.CharField(max_length=15)
-    senha = models.CharField(max_length=20)
+    senha = models.CharField(max_length=128)  # Alterado para suportar senhas hasheadas
     cpf = models.CharField(max_length=15)
-    
-    def registrarUsuario(self):
+
+    def save(self, *args, **kwargs):
+        if not self.senha.startswith('pbkdf2_'):  # Evita re-hashear senhas
+            self.senha = make_password(self.senha)
+        super().save(*args, **kwargs)
+
+    def set_password(self, raw_password):
+        self.senha = make_password(raw_password)
         self.save()
         
-
-
-
-
-
 class Paciente (Usuario):
     data_nascimento = models.DateField()
     numero_usp = models.CharField(max_length=10)
