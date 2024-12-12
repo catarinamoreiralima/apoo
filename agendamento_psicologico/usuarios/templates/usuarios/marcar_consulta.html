@@ -23,7 +23,7 @@
             <a href="{% url 'gerenciar_consultas' %}">Gerenciar Consultas</a>
         </div>
 
-        <!-- Botão de Sair (com imagem de logo) -->
+        <!-- Botão de Sair -->
         <div class="logout-container">
             <a href="{% url 'logout' %}" class="logout">
                 <img src="{% static 'images/sair.png' %}" alt="Sair">
@@ -31,39 +31,37 @@
         </div>
     </div>
 
-    <script>
-        window.addEventListener("resize", function() {
-            adjustSidebar();
-        });
-
-        function adjustSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('collapsed'); // Recolhe a barra lateral em telas pequenas
-            } else {
-                sidebar.classList.remove('collapsed'); // Expande a barra lateral em telas grandes
-            }
-        }
-
-        // Inicializa a barra lateral ao carregar a página
-        adjustSidebar();
-    </script>
-
-    <!-- Conteúdo principal -->
-    <div class="main-content">
-        <h1>Vamos marcar uma Consulta?</h1>
-        <h2>Escolha um Psicólogo!</h2>
-        {% for psicologo in psicologos %}
-        <div class="card">
-            <!--<img src="{{ psicologo.imagem.url|default:'/static/default-avatar.png' }}" alt="Foto de {{ psicologo.nome }}">--> 
-            <div class="card-body">
-                <h2 class="card-title">{{ psicologo.nome }}</h2>
-                <p class="card-subtitle">{{ psicologo.abordagem }}</p>
-                <p class="card-subtitle">Registro: {{ psicologo.registro_profissional }}</p>
-                <a href="{% url 'calendario_psicologo' psicologo.id %}" class="card-button">Visualizar Horários</a>
-            </div>
+    <div class="main-container">
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <h1>Vamos marcar uma Consulta?</h1>
+            <h2>Escolha um Psicólogo!</h2>
+            
+            <table class="psychologists-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Abordagem</th>
+                        <th>Registro Profissional</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if psicologos %}
+                        {% for psicologo in psicologos %}
+                        <tr>
+                            <td>{{ psicologo.nome }}</td>
+                            <td>{{ psicologo.abordagem }}</td>
+                            <td>{{ psicologo.registro_profissional }}</td>
+                            <td><a href="{% url 'calendario_psicologo' psicologo.id %}" class="btn">Visualizar Horários</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <p>Nenhum psicólogo disponível no momento.</p>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
-        {% endfor %}
     </div>
 </body>
 </html>
