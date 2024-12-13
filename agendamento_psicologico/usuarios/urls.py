@@ -27,7 +27,7 @@ urlpatterns = [
          name='password_reset_complete'),
     path('marcar_consulta.html', views.marcar_consulta, name='marcar_consulta'),
     path('psicologos/<int:psicologo_id>/', views.perfil_psicologo, name='perfil_psicologo'),
-    path('psicologos/<int:psicologo_id>/calendario/', views.calendario_psicologo, name='calendario_psicologo'),
-    path('psicologos/<int:psicologo_id>/horarios/<str:data>/', views.horarios_por_dia, name='horarios_por_dia'),
+    path('psicologo/<int:psicologo_id>/horarios/', views.listar_horarios, name='calendario_psicologo'),
+    path('horario/<int:horario_id>/marcar/', views.marcar_horario, name='marcar_horario'),
     path('confirmar/<int:horario_id>/', views.confirmar_consulta, name='confirmar_consulta'),
 ]

@@ -190,6 +190,23 @@ def marcar_consulta(request):
     return render(request, 'usuarios/marcar_consulta.html', {'psicologos': psicologos})
 
 @login_required
+def listar_horarios(request, psicologo_id):
+    psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    horarios_disponiveis = psicologo.horarios.filter(disponivel=True)
+    return render(request, 'usuarios/listar_horarios.html', {'psicologo': psicologo, 'horarios': horarios_disponiveis})
+
+@login_required
+def marcar_horario(request, horario_id):
+    horario = get_object_or_404(Horario, id=horario_id)
+    if horario.disponivel:
+        horario.marcar_consulta(request.user)
+        return redirect('marcar_consulta')
+    else:
+        return render(request, 'usuarios/erro.html', {'mensagem': 'Este horário já foi reservado.'})
+
+
+
+@login_required
 def perfil_psicologo(request, psicologo_id):
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     return render(request, 'perfil_psicologo.html', {'psicologo': psicologo})

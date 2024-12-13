@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horários Disponíveis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/listar_horarios.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <h1>Horários Disponíveis para {{ psicologo.nome }}</h1>
+
+        {% if horarios %}
+        <table class="horarios-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Hora Início</th>
+                    <th>Hora Fim</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horario in horarios %}
+                <tr>
+                    <td>{{ horario.data }}</td>
+                    <td>{{ horario.hora_inicio }}</td>
+                    <td>{{ horario.hora_fim }}</td>
+                    <td>
+                        <a href="{% url 'marcar_horario' horario.id %}" class="btn">Marcar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Não há horários disponíveis para este psicólogo no momento.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
