@@ -237,3 +237,52 @@ def confirmar_consulta(request, horario_id):
         return redirect('dashboard')
 
     return render(request, 'confirmar_consulta.html', {'horario': horario, 'psicologo': psicologo})
+
+
+@login_required
+def cadastrar_horarios(request):
+    if not hasattr(request.user, 'psicologo'):
+        return HttpResponse("Acesso negado.")
+
+    psicologo = request.user.psicologo
+    if request.method == "POST":
+        data = request.POST.get("data")
+        hora_inicio = request.POST.get("hora_inicio")
+        hora_fim = request.POST.get("hora_fim")
+
+        Horario.objects.create(
+            psicologo=psicologo, data=data, hora_inicio=hora_inicio, hora_fim=hora_fim
+        )
+        return redirect('dashboard')
+
+    return render(request, 'usuarios/cadastrar_horarios.html')
+
+
+@login_required
+def horarios_disponiveis(request, psicologo_id):
+    psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    horarios = Horario.objects.filter(psicologo=psicologo, disponivel=True)
+
+    if request.method == "POST":
+        horario_id = request.POST.get("horario_id")
+        horario = get_object_or_404(Horario, id=horario_id, disponivel=True)
+        horario.marcar_consulta(request.user.paciente)
+        return redirect('dashboard')
+
+    return render(request, 'usuarios/horarios_disponiveis.html', {'horarios': horarios, 'psicologo': psicologo})
+
+
+@login_required
+def vincular_horario(request, horario_id):
+    if not hasattr(request.user, 'psicologo'):
+        return HttpResponse("Acesso negado.")
+
+    horario = get_object_or_404(Horario, id=horario_id, psicologo=request.user.psicologo)
+
+    if request.method == "POST":
+        paciente_id = request.POST.get("paciente_id")
+        paciente = get_object_or_404(Paciente, id=paciente_id)
+        horario.marcar_consulta(paciente)
+        return redirect('dashboard')
+
+    return render(request, 'usuarios/vincular_horario.html', {'horario': horario})

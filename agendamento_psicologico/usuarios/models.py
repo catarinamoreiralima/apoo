@@ -30,10 +30,15 @@ class Paciente (Usuario):
     
     
     
-class Psicologo (Usuario):
+class Psicologo(Usuario):
     registro_profissional = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100)
-    
+
+    def horarios_disponiveis(self):
+        return self.horarios.filter(disponivel=True)
+
+    def horarios_marcados(self):
+        return self.horarios.filter(disponivel=False)
 
 class Administrador (Usuario):
     cargo = models.CharField(max_length=100)
@@ -72,46 +77,39 @@ class Mes(Enum):
         return [(key.name, key.value) for key in cls]
 
 class Hora(Enum):
-    H00_00 = "0h00"
     @classmethod
     def choices(cls):
-        return [(key.name, key.value) for key in cls]    
+        return [(f'H{hora:02}_00', f'{hora}:00') for hora in range(24)]   
     
-    
+# models.py
+
 class Horario(models.Model):
+    psicologo = models.ForeignKey(
+        Psicologo, on_delete=models.CASCADE, related_name="horarios"
+    )
     dia_da_semana = models.CharField(
         max_length=20,
         choices=DiasDaSemana.choices(),
         default=DiasDaSemana.SEGUNDA.name,
     )
     data = models.DateField()
-    
-    
-    mes = models.CharField(
-        max_length=20,
-        choices=Mes.choices(),
-        default=Mes.JANEIRO.name,
-    )
-    
     hora_inicio = models.CharField(
         max_length=20,
         choices=Hora.choices(),
-        default=Hora.H00_00.name,
     )
-    
     hora_fim = models.CharField(
         max_length=20,
         choices=Hora.choices(),
-        default=Hora.H00_00.name,
     )
-    
-    disponivel = True
-    
-    def registrarHorario(self):
-        self.save()
+    disponivel = models.BooleanField(default=True)
+    paciente = models.ForeignKey(
+        Paciente, null=True, blank=True, on_delete=models.SET_NULL, related_name="horarios"
+    )
 
-
-class Consulta(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name="consultas")
-    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE, related_name="consultas")
-    horario = models.OneToOneField(Horario, on_delete=models.CASCADE, related_name="consulta")
+    def marcar_consulta(self, paciente):
+        if self.disponivel:
+            self.paciente = paciente
+            self.disponivel = False
+            self.save()
+        else:
+            raise ValueError("Horário já reservado.")
