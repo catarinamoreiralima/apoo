@@ -5,64 +5,62 @@
     box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Fundo branco */
+    background-color: #008CBA; /* Fundo azul */
     color: #333; /* Cor do texto */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh; /* Tela cheia */
     margin: 0;
-    background-image: url("{% static 'images/background.png' %}"); /* Correção da sintaxe */
-    background-size: cover; /* Para cobrir toda a tela */
-    background-position: center; /* Centraliza a imagem */
-    background-attachment: fixed; /* Fixa a imagem enquanto rola a página */
 }
 
+/* Container principal */
 .login-container {
-    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco semitransparente */
+    background-color: white; /* Fundo branco */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 40px;
     width: 100%;
-    max-width: 500px; /* Aumenta a largura */
+    max-width: 400px; /* Largura máxima */
     text-align: center;
-    border-left: 5px solid #008CBA; /* Faixa azul na lateral esquerda */
-    border-right: 5px solid #008CBA; /* Faixa azul na lateral direita */
 }
 
+/* Logo */
 .logo img {
-    width: 100px; /* Ajuste o tamanho da logo conforme necessário */
+    width: 100px; /* Ajuste o tamanho da logo */
     margin-bottom: 20px;
 }
 
+/* Título */
 h2 {
-    color: #008CBA; /* Azul */
-    font-size: 30px; /* Aumenta o tamanho da fonte */
+    color: #333; /* Texto escuro */
+    font-size: 24px; /* Tamanho do texto */
     margin-bottom: 20px;
 }
 
+/* Campos de entrada */
 .input-field {
     margin-bottom: 20px;
     text-align: left;
 }
-
 .input-field label {
     display: block;
     margin-bottom: 5px;
     font-size: 16px;
 }
-
 .input-field input {
     width: 100%;
     padding: 12px; /* Aumenta o padding dos inputs */
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin: 8px 0; /* Aumenta o espaçamento entre os campos */
+    font-size: 14px; /* Tamanho da fonte */
 }
 
-button {
+/* Botão "Entrar" */
+.login-button {
     width: 100%;
     padding: 14px;
     background-color: #FFA500; /* Laranja */
@@ -71,67 +69,49 @@ button {
     border-radius: 4px;
     font-size: 18px; /* Aumenta o tamanho da fonte */
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Espaço acima do botão */
 }
-
-button:hover {
+.login-button:hover {
     background-color: #e69500; /* Laranja mais escuro no hover */
 }
-
-button:focus {
+.login-button:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 140, 186, 0.7); /* Sombra azul clara no foco */
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.7); /* Sombra laranja clara no foco */
 }
 
+/* Links de opções */
+.options {
+    margin-top: 20px;
+}
+.options a {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #008CBA; /* Azul */
+    text-decoration: none;
+}
+.options a:hover {
+    text-decoration: underline;
+}
+
+/* Foco nos campos de entrada */
 input:focus {
     border-color: #008CBA; /* Azul no foco dos inputs */
     outline: none;
     box-shadow: 0 0 5px rgba(0, 140, 186, 0.7); /* Sombra azul clara */
 }
 
-::placeholder {
-    color: #888; /* Cor do texto de placeholder */
-}
-
-/* Estilização para o link "Esqueci minha senha" */
-.forgot-password {
-    display: block;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #008CBA; /* Azul */
-    text-decoration: none;
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
-}
-
-/* Estilização para o botão "Cadastrar Usuário" */
-.register-button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 14px;
-    background-color: #008CBA; /* Azul */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-    text-decoration: none; /* Remove sublinhado do link */
-    transition: background-color 0.3s;
-}
-
-.register-button:hover {
-    background-color: #005f6b; /* Azul mais escuro no hover */
-}
-
+/* Responsividade */
 @media (max-width: 480px) {
     .login-container {
         padding: 20px;
         width: 90%;
     }
-
     h2 {
-        font-size: 24px; /* Reduz o tamanho do título para telas pequenas */
+        font-size: 20px; /* Reduz o tamanho do título em telas pequenas */
+    }
+    .login-button {
+        font-size: 16px;
     }
 }
