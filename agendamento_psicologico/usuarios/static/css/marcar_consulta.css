@@ -11,7 +11,7 @@ body {
     background-color: #f4f4f4;
     color: #333;
     display: flex;
-    height: 100vh;
+    height: 200vh;
     margin: 0;
 }
 
@@ -25,10 +25,9 @@ body {
     left: 0;
     bottom: 0;
     padding: 20px 10px;
-    transition: width 0.3s ease; /* Transição suave */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Isso vai garantir que o conteúdo e o botão de logout fiquem nas extremidades */
+    justify-content: space-between; /* Garante que o conteúdo e o botão de logout fiquem nas extremidades */
 }
 
 .sidebar.collapsed {
@@ -39,17 +38,17 @@ body {
 .logo a {
     display: block;
     text-align: center;
-    margin-bottom: 30px; /* Espaço abaixo da logo */
+    margin-bottom: 30px;
 }
 
 .logo img {
-    width: 40px; /* Tamanho da logo */
+    width: 40px;
     height: auto;
     display: block;
-    margin: 0 auto; /* Centraliza a imagem */
+    margin: 0 auto;
 }
 
-/* Estilo dos links da barra lateral */
+/* Links da barra lateral */
 .sidebar-links a {
     display: block;
     color: white;
@@ -61,48 +60,92 @@ body {
 }
 
 .sidebar-links a:hover {
-    background-color: #007b8f; /* Cor ao passar o mouse */
+    background-color: #007b8f;
 }
 
-/* Estilo do botão de logout com imagem */
+/* Botão de logout */
 .logout-container {
     display: flex;
     justify-content: center;
-    margin-top: auto; /* Isso garante que o botão fique no final da barra lateral */
-    padding-bottom: 20px; /* Espaço no final da barra */
-}
-
-.logout {
-    display: block;
-    background-color: transparent; /* Fundo transparente */
-    padding: 12px;
-    border-radius: 5px;
-    text-align: center;
-    transition: background-color 0.3s ease;
+    margin-top: auto;
+    padding-bottom: 20px;
 }
 
 .logout img {
-    width: 30px; /* Ajusta o tamanho da imagem */
+    width: 30px;
     height: auto;
     transition: transform 0.3s ease;
 }
 
-.logout:hover {
-    background-color: #d9534f; /* Cor de fundo mais escura no hover */
-}
-
-/* Efeito de hover para a imagem */
 .logout:hover img {
-    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+    transform: scale(1.1);
 }
 
 /* Conteúdo principal */
 .main-content {
-    margin-left: 250px; /* Espaço reservado para a barra lateral */
-    padding: 40px;
-    flex-grow: 1;
-    background-color: #ffffff;
+    margin-left: 250px; /* Deixa espaço para a barra lateral */
+    padding: 20px;
+    width: calc(100% - 250px); /* Calcula o espaço restante */
+    height: 100vh; /* Garante que ocupe toda a altura */
+    background-color: #ffffff; /* Fundo branco */
+    overflow-y: auto; /* Permite rolagem se o conteúdo exceder a altura */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Estilo da tabela na main-content */
+.psychologists-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.psychologists-table th,
+.psychologists-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 12px 15px;
+}
+
+.psychologists-table th {
+    background-color: #008CBA;
+    color: white;
+    font-weight: bold;
+}
+
+.psychologists-table tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.psychologists-table tr:hover {
+    background-color: #e6f7ff;
+}
+
+.psychologists-table .btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.psychologists-table .btn:hover {
+    background-color: #45a049;
+}
+
+/* Centraliza o conteúdo da tabela na main-content */
+.psychologists-table-container {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
 }
 
 /* Responsividade - Ajustes para telas pequenas */
@@ -111,11 +154,13 @@ body {
         width: 200px; /* Reduz a largura da barra lateral em telas pequenas */
     }
 
-    .sidebar.collapsed {
-        width: 0px; /* Quando a barra lateral está recolhida, ela ocupa 0px */
+    .main-content {
+        margin-left: 200px; /* Ajusta a margem para a largura reduzida da barra lateral */
+        width: calc(100% - 200px); /* Calcula o espaço restante */
     }
 
-    .main-content {
-        margin-left: 0; /* Quando a barra lateral estiver recolhida, ocupa toda a largura */
+    .psychologists-table-container {
+        width: 100%;
+        margin-top: 10px;
     }
 }

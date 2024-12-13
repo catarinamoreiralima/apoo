@@ -1,9 +1,32 @@
-<h1>Psicólogos Disponíveis</h1>
-<ul>
-    {% for psicologo in psicologos %}
-        <li>
-            <p>{{ psicologo.nome }} - {{ psicologo.abordagem }}</p>
-            <a href="{% url 'perfil_psicologo' psicologo.id %}">Visualizar Perfil</a>
-        </li>
-    {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Psicólogos</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="main-content">
+        <h1>Vamos marcar uma Consulta?</h1>
+        <h2>Escolha um Psicólogo!</h2>
+        
+        {% if psicologos %}
+            {% for psicologo in psicologos %}
+            <div class="card">
+                <!-- Substitua 'default-avatar.png' pelo caminho correto para sua imagem padrão -->
+                <!--<img src="{{ psicologo.imagem.url|default:'/static/default-avatar.png' }}" alt="Foto de {{ psicologo.nome }}">-->
+                <div class="card-body">
+                    <h2 class="card-title">{{ psicologo.nome }}</h2>
+                    <p class="card-subtitle">{{ psicologo.abordagem }}</p>
+                    <p class="card-subtitle">Registro: {{ psicologo.registro_profissional }}</p>
+                    <a href="{% url 'calendario_psicologo' psicologo.id %}" class="card-button">Visualizar Horários</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum psicólogo disponível no momento.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

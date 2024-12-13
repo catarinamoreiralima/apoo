@@ -184,13 +184,10 @@ def register_view(request):
 @login_required
 def marcar_consulta(request):
     if request.method == 'POST':
-        return redirect('marcar_consulta.html') 
-    return render(request, 'usuarios/marcar_consulta.html')  
-
-@login_required
-def listar_psicologos(request):
-    psicologos = Psicologo.objects.distinct()
-    return render(request, 'psicologos_list.html', {'psicologos': psicologos})
+        return redirect('marcar_consulta')
+    # Busca todos os psicólogos
+    psicologos = Psicologo.objects.all()
+    return render(request, 'usuarios/marcar_consulta.html', {'psicologos': psicologos})
 
 @login_required
 def perfil_psicologo(request, psicologo_id):
