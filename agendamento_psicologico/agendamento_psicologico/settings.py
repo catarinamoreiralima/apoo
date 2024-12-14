@@ -100,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -139,4 +138,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/usuarios/dashboard/'  # Redireciona após login para o dashboard
 LOGOUT_REDIRECT_URL = '/usuarios/login/'  # Redireciona para a página inicial após logout
 LOGIN_URL = '/usuarios/login/' 
-

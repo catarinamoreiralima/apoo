@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import check_password
 from .utils import verificar_usuario
 from .models import Paciente, Usuario
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Psicologo, Horario
+from .models import Psicologo
 from django.http import HttpResponse
 
 def register_view(request):
@@ -74,22 +74,17 @@ def login_view(request):
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
-        # Verificar usuário
         usuario, mensagem = verificar_usuario(email, senha)
-        print(usuario)
-        print(mensagem)
-        if usuario:
-            # Login bem-sucedido: armazenar o ID do usuário na sessão
+        print(f"Usuário autenticado: {usuario}")
+        print(f"Mensagem: {mensagem}")
+        if usuario: 
             request.session['usuario_id'] = usuario.id
-            print(f"Email recebido: {email}")  # Debug: imprime o email recebido
-            print(f"Senha recebida: {senha}")  # Debug: imprime a senha recebida
-            # Redirecionar para a dashboard
-            return redirect('dashboard')  # Use o nome da URL da dashboard
+            print("Redirecionando para o dashboard...")
+            return redirect('dashboard')
         else:
-            # Retornar mensagem de erro
+            print("Erro no login. Retornando para a página de login.")
             return render(request, 'usuarios/login.html', {'erro': mensagem})
-    
-    # Renderizar a página de login
+    print("Exibindo página de login.")
     return render(request, 'usuarios/login.html')
 
 @login_required

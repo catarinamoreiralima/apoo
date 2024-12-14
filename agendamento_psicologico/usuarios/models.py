@@ -34,12 +34,12 @@ class Psicologo(Usuario):
     registro_profissional = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100)
 
-    def horarios_disponiveis(self):
+    """def horarios_disponiveis(self):
         return self.horarios.filter(disponivel=True)
 
     def horarios_marcados(self):
         return self.horarios.filter(disponivel=False)
-
+"""
 class Administrador (Usuario):
     cargo = models.CharField(max_length=100)
     
@@ -83,7 +83,7 @@ class Hora(Enum):
     
 # models.py
 
-class Horario(models.Model):
+"""class Horario(models.Model):
     psicologo = models.ForeignKey(
         Psicologo, on_delete=models.CASCADE, related_name="horarios"
     )
@@ -113,3 +113,4 @@ class Horario(models.Model):
             self.save()
         else:
             raise ValueError("Horário já reservado.")
+"""

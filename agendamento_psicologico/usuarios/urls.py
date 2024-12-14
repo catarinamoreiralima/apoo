@@ -5,8 +5,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    # Página de login personalizada
-    path("", views.login_view, name='home'),
+    path("", views.login_view, name='home'), #login 
     path('register/', views.register_view, name='register'),
     path('dashboard/', views.dashboard, name='dashboard'),  # URL do dashboard
     path('configurar_perfil.html', views.configurar_perfil, name='configurar_perfil'),  # URL para configurar perfil
