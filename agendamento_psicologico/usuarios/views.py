@@ -1,5 +1,3 @@
-# views.py
-
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy  # Para usar URLs como redirecionamento
@@ -9,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import check_password
 from .utils import verificar_usuario
-from .models import Paciente, Usuario
+from .models import Paciente, Usuario, Horario
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Psicologo
 from django.http import HttpResponse
@@ -104,6 +102,7 @@ def dashboard(request):
 
     # Renderizar a dashboard com informações do usuário
     return render(request, 'usuarios/dashboard.html', {'usuario': usuario})
+
 @login_required
 def configurar_perfil(request):
     """
@@ -134,8 +133,7 @@ def configurar_perfil(request):
 
     return render(request, 'usuarios/configurar_perfil.html')
 
-
-#@login_required
+@login_required
 def gerenciar_consultas(request):
     """
     View para gerenciar consultas.
@@ -143,16 +141,17 @@ def gerenciar_consultas(request):
     """
     # Exemplo básico de renderização
     # Você pode passar consultas do banco de dados no contexto, se necessário
-    consultas = []  # Substituir por consultas reais do banco de dados
+    user_id = request.session['usuario_id']
+    paciente = get_object_or_404(Paciente, id=user_id) 
+    consultas = []  # Substituir por consultas reais do banco de dados 
+    consultas = Horario.objects.filter(paciente=paciente).order_by('data', 'hora_inicio')
     return render(request, 'usuarios/gerenciar_consultas.html', {"consultas": consultas})
-
 
 def logout_view(request):
     """
     View para fazer logout do usuário e redirecioná-lo para a página de login.
     """
-    logout(request)  # Faz o logout do usuário atual
-    return redirect('login')  # Redireciona para a página de login
+    return redirect('home')  # Redireciona para a página de login
 
 
 def register_view(request):
@@ -180,26 +179,31 @@ def register_view(request):
 def marcar_consulta(request):
     if request.method == 'POST':
         return redirect('marcar_consulta')
-    # Busca todos os psicólogos
+    # Busca todos os psicólogos 
     psicologos = Psicologo.objects.all()
     return render(request, 'usuarios/marcar_consulta.html', {'psicologos': psicologos})
 
 @login_required
-def listar_horarios(request, psicologo_id):
+def listar_horario(request, psicologo_id):
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
+    print(psicologo) 
     horarios_disponiveis = psicologo.horarios.filter(disponivel=True)
-    return render(request, 'usuarios/listar_horarios.html', {'psicologo': psicologo, 'horarios': horarios_disponiveis})
+    for i in horarios_disponiveis: 
+        print(i)
+    return render(request, 'usuarios/listar_horario.html', {'psicologo': psicologo, 'horarios': horarios_disponiveis})
 
 @login_required
 def marcar_horario(request, horario_id):
     horario = get_object_or_404(Horario, id=horario_id)
     if horario.disponivel:
-        horario.marcar_consulta(request.user)
+        user_id = request.session['usuario_id']
+        print(user_id)
+        paciente = get_object_or_404(Paciente, id=user_id)
+        print(paciente.nome)
+        horario.marcar_consulta(paciente)
         return redirect('marcar_consulta')
     else:
         return render(request, 'usuarios/erro.html', {'mensagem': 'Este horário já foi reservado.'})
-
-
 
 @login_required
 def perfil_psicologo(request, psicologo_id):

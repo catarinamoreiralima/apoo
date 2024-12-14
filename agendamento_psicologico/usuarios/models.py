@@ -28,8 +28,6 @@ class Paciente (Usuario):
     data_nascimento = models.DateField()
     numero_usp = models.CharField(max_length=10)
     
-    
-    
 class Psicologo(Usuario):
     registro_profissional = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100)
@@ -41,36 +39,8 @@ class Psicologo(Usuario):
         return self.horarios.filter(disponivel=False)
 """
 class Administrador (Usuario):
-    cargo = models.CharField(max_length=100)
-    
-    
+    cargo = models.CharField(max_length=100) 
 
-class DiasDaSemana(Enum):
-    SEGUNDA = "Segunda-feira"
-    TERCA = "Terça-feira"
-    QUARTA = "Quarta-feira"
-    QUINTA = "Quinta-feira"
-    SEXTA = "Sexta-feira"
-    SABADO = "Sábado"
-    DOMINGO = "Domingo"
-
-    @classmethod
-    def choices(cls):
-        return [(key.name, key.value) for key in cls]
-    
-class Mes(Enum):
-    JANEIRO = "Janeiro"
-    FEVEREIRO = "Fevereiro"
-    MARCO = "Março"
-    ABRIL = "Abril"
-    MAIO = "Maio"
-    JUNHO = "Junho"
-    JULHO = "Julho"
-    AGOSTO = "Agosto"
-    SETEMBRO = "Setembro"
-    OUTUBRO = "Outubro"
-    NOVEMBRO = "Novembro"
-    DEZEMBRO = "Dezembro"
 
     @classmethod
     def choices(cls):
@@ -79,18 +49,11 @@ class Mes(Enum):
 class Hora(Enum):
     @classmethod
     def choices(cls):
-        return [(f'H{hora:02}_00', f'{hora}:00') for hora in range(24)]   
-    
-# models.py
+        return [(f'{hora:02}h00', f'{hora}:00') for hora in range(24)]
 
-"""class Horario(models.Model):
+class Horario(models.Model):
     psicologo = models.ForeignKey(
         Psicologo, on_delete=models.CASCADE, related_name="horarios"
-    )
-    dia_da_semana = models.CharField(
-        max_length=20,
-        choices=DiasDaSemana.choices(),
-        default=DiasDaSemana.SEGUNDA.name,
     )
     data = models.DateField()
     hora_inicio = models.CharField(
@@ -105,7 +68,7 @@ class Hora(Enum):
     paciente = models.ForeignKey(
         Paciente, null=True, blank=True, on_delete=models.SET_NULL, related_name="horarios"
     )
-
+    
     def marcar_consulta(self, paciente):
         if self.disponivel:
             self.paciente = paciente
@@ -113,4 +76,3 @@ class Hora(Enum):
             self.save()
         else:
             raise ValueError("Horário já reservado.")
-"""

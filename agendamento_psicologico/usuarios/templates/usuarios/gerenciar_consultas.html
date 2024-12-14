@@ -33,18 +33,35 @@
 
     <!-- Conteúdo principal -->
     <div class="main-content">
-        <h2>Gerenciar Consultas</h2>
+       
+        <h1>Gerenciar Consultas</h1>
 
-        <!-- Informações do usuário -->
+        {% if consultas %}
         <div class="consultas-info">
-            <h3>Informações de suas Consultas</h3>
-            <p><strong>Total de Consultas Marcadas:</strong> 5</p>
-            <ul>
-                <li><strong>Data:</strong> 12/12/2024 - <strong>Horário:</strong> 10:00 AM</li>
-                <li><strong>Data:</strong> 15/12/2024 - <strong>Horário:</strong> 02:00 PM</li>
-                <!-- Exemplo de consulta, adicionar mais conforme o banco de dados -->
-            </ul>
+            <h3>Minhas Consultas</h3>
+            <p><strong>Total de Consultas Marcadas:</strong> {{ consultas|length }}</p>
+            <table class="consultas-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Psicólogo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in consultas %}
+                    <tr>
+                        <td>{{ consulta.data|date:"d/m/Y" }}</td>
+                        <td>{{ consulta.hora_inicio}} - {{ consulta.hora_fim}}</td>
+                        <td>{{ consulta.psicologo.nome }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>            
         </div>
+        {% else %}
+        <p>Você ainda não possui consultas marcadas.</p>
+        {% endif %}
 
         <!-- Botões de ações -->
         <div class="action-buttons">
@@ -54,10 +71,6 @@
             </form>
             <button class="btn-orange">Desmarcar Consulta</button>
             <button class="btn-orange">Remarcar Consulta</button>
-        </div>
-
-        <div>
-            <p>Suas consultas estarão aqui.</p>
         </div>
     </div>
 

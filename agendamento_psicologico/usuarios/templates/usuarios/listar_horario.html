@@ -4,29 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horários Disponíveis</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/listar_horarios.css' %}">
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"> <!--manter o padrao-->  
 </head>
 <body>
-    <div class="main-container">
+
+    <!-- Barra lateral -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo clicável que leva ao Dashboard -->
+        <div class="logo">
+            <a href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" />
+            </a>
+        </div>
+
+        <!-- Botões de navegação -->
+        <div class="sidebar-links">
+            <a href="{% url 'configurar_perfil' %}">Configurar Perfil</a>
+            <a href="{% url 'gerenciar_consultas' %}">Gerenciar Consultas</a>
+        </div>
+
+        <!-- Botão de Sair (com imagem de logo) -->
+        <div class="logout-container">
+            <a href="{% url 'logout' %}" class="logout">
+                <img src="{% static 'images/sair.png' %}" alt="Sair">
+            </a>
+        </div>
+    </div> 
+
+    <div class="main-content">
         <h1>Horários Disponíveis para {{ psicologo.nome }}</h1>
 
         {% if horarios %}
         <table class="horarios-table">
             <thead>
                 <tr>
-                    <th>Data</th>
-                    <th>Hora Início</th>
-                    <th>Hora Fim</th>
+                    <th>Data   </th>
+                    <th>Início   </th>
+                    <th>Fim   </th>
                     <th>Ação</th>
                 </tr>
             </thead>
             <tbody>
                 {% for horario in horarios %}
-                <tr>
-                    <td>{{ horario.data }}</td>
-                    <td>{{ horario.hora_inicio }}</td>
-                    <td>{{ horario.hora_fim }}</td>
+                <tr> 
+                    <td>{{ horario.data|date:"d/m/Y" }}</td>
+                    <td>{{ horario.hora_inicio}}</td>
+                    <td> {{ horario.hora_fim}}</td>
                     <td>
                         <a href="{% url 'marcar_horario' horario.id %}" class="btn">Marcar</a>
                     </td>

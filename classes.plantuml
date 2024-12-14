@@ -2,78 +2,52 @@
 
 abstract class Usuario {
   - nome: str
-  # email: str
-  # telefone: str
-  # senha: str
-  # cpf: str
+  - email: str
+  - telefone: str
+  - senha: str
+  - cpf: str
 }
 
 
 class Paciente {
   - data_nascimento: date
-  # numero_USP: str
+  - numero_USP: str
  
 }
 
 class Psicologo {
-  # registro_profissional: str
+  - registro_profissional: str
   - abordagem: str
-}
+  + horarios_disponiveis(): 
 
-class Consulta {
-  - paciente: Paciente
-  - psicologo: Psicologo
-  - horario: Horario
-  - status: str
 }
 
 class Horario {
-  - data: int
-  - dia_semana: DiaSemana
-  - mes: Mes
+  - psicologo: Psicologo
+  - data: Data
   - hora_inicio: Hora
   - hora_fim: Hora
   - disponivel: bool
+  - paciente: Paciente
+  + marcar_consulta(Paciente) : void
   
 }
 
-enum DiaSemana {
-  SEGUNDA,
-  TERCA,
-  QUARTA,
-  QUINTA,
-  SEXTA
-}
-
-enum Mes {
-  JANEIRO,
-  FEVEREIRO,
-  MARCO,
-  ABRIL,
-  MAIO,
-  JUNHO,
-  JULHO,
-  AGOSTO,
-  SETEMBRO,
-  OUTUBRO,
-  NOVEMBRO,
-  DEZEMBRO
-}
-
 enum Hora {
-  H08_00,
-  H09_00,
-  H10_00,
-  H11_00,
-  H12_00,
-  H13_00,
-  H14_00,
-  H15_00,
-  H16_00,
-  H17_00,
-  H18_00,
-  H19_00
+    08h00
+    09h00
+    10h00
+    11h00
+    12h00
+    13h00
+    14h00
+    15h00
+    16h00
+    17h00
+    18h00
+    19h00
 }
+
 
 class Administrador {
   - cargo: str
@@ -82,8 +56,7 @@ class Administrador {
 Usuario <|-- Paciente
 Usuario <|-- Psicologo
 Usuario <|-- Administrador
-Paciente --> "0..*" Consulta : possui
-Psicologo --> "0..*" Consulta : possui
-Consulta --> "1..1" Horario : possui
+Paciente --> "0..*" Horario : possui
+Psicologo --> "0..*" Horario : possui
 
 @enduml

@@ -13,16 +13,18 @@
 "Verificar dados psicólogo" as (verificarPsico)
 "Verificar dados paciente" as (verificarPaciente)
 "Verificar pacientes marcados" as (verificarMarcados)
+"Cadastrar horarios disponíveis" as (hor)
 
 admin --> (Gerar relatórios da plataforma)
 admin --> (Receber feedbacks da plataforma)
 admin --> (Gerenciar perfis de usuário)
 
+(Gerenciar perfis de usuário) --> (cad)
+(Gerenciar perfis de usuário) --> (hor)
+
 user <|-- psi
 user <|-- paci
 
-
-(cad) <-u- user
 
 
 (gerenciarConsultas) <-u- user

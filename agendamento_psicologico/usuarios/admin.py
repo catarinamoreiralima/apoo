@@ -1,10 +1,17 @@
 from django.contrib import admin
 from django.contrib import admin
-from .models import Psicologo, Paciente
+from .models import Psicologo, Paciente, Horario
 # Register your models here.
+
+class HorarioInline(admin.TabularInline):  # Ou admin.StackedInline para exibição vertical
+    model = Horario
+    extra = 1  # Número de horários adicionais exibidos para adicionar
 
 @admin.register(Psicologo)
 class PsicologoAdmin(admin.ModelAdmin):
+    
+    inlines = [HorarioInline] 
+    
     list_display = ('nome', 'email', 'telefone', 'registro_profissional', 'abordagem')
     
     def save_model(self, request, obj, form, change):

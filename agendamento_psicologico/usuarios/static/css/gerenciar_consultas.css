@@ -152,3 +152,28 @@ body {
         margin-left: 0;
     }
 }
+
+.consultas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.consultas-table th, .consultas-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 12px;
+}
+
+.consultas-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.consultas-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.consultas-table tr:hover {
+    background-color: #e6f7ff;
+}
