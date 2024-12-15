@@ -1,0 +1,60 @@
+@startuml
+actor Administrador as Admin
+boundary "Interface de Login Admin" as InterAdmin
+control "Controlador de Login Admin" as CtrlAdmin
+participant ":Login" as Login
+boundary "Interface de Cadastro" as InterCad
+control "Controlador de Cadstro" as CtrlCad
+participant ":Cadastro" as Cadastro
+database ":bancoUsuarios" as db
+
+Admin -> InterAdmin : email
+Admin -> InterAdmin : senha
+
+InterAdmin -> CtrlAdmin : verifica_usuario(email, senha)
+CtrlAdmin -> db : get_Admin (email, senha)
+db -> CtrlAdmin : Admin : usuario
+
+alt usuario existe
+
+    CtrlAdmin -> Login : autentica_usuario(email, senha)
+
+    Login -> CtrlAdmin : cookie
+
+    CtrlAdmin -> InterCad : ok
+
+    InterCad -> Admin : formulario de cadastro
+
+    Admin -> InterCad : usuario
+
+    InterCad -> CtrlCad : usuario
+
+    CtrlCad -> db : usuario
+
+    alt usuario unico
+
+        db -> CtrlCad : ok
+
+        CtrlCad -> InterCad : ok
+
+        InterCad -> Admin : refresh com novo usuário na base
+
+    else usuario ja cadastrado
+
+        db -> CtrlCad : erro "Usuario ja cadastrado"
+
+        CtrlCad -> InterCad : erro "Usuario ja cadastrado"
+
+        InterCad -> Admin : erro "Usuario ja cadastrado"
+
+    end
+
+else usuario nao existe
+
+    CtrlAdmin -> InterAdmin : erro : "Usuario nao existe"
+
+    InterAdmin -> Admin : erro : "Usuario nao existe ou senha incorreta"
+
+end
+
+@enduml

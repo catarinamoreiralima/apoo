@@ -1,0 +1,80 @@
+@startuml
+actor Administrador as Admin
+boundary "Interface de Login Admin" as InterAdmin
+control "Controlador de Login Admin" as CtrlAdmin
+participant ":Login" as Login
+boundary "Interface de Cadastro" as InterCad
+control "Controlador de Cadstro" as CtrlCad
+participant ":Cadastro" as Cadastro
+database ":bancoHorarios" as db
+
+Admin -> InterAdmin : email
+Admin -> InterAdmin : senha
+
+InterAdmin -> CtrlAdmin : verifica_usuario(email, senha)
+CtrlAdmin -> db : get_Admin (email, senha)
+db -> CtrlAdmin : Admin : usuario
+
+alt usuario existe
+
+    CtrlAdmin -> Login : autentica_usuario(email, senha)
+
+    Login -> CtrlAdmin : cookie
+
+    CtrlAdmin -> InterCad : ok
+
+    InterCad -> CtrlCad : get_psicologos()
+
+    CtrlCad -> db : get_psicologos()
+
+
+    alt existem psicologos cadastrados
+
+        db -> CtrlCad : psicologos: list
+
+        CtrlCad -> InterCad : psicologos: list
+
+        InterCad -> Admin : pagina com psicologos listados
+
+        Admin -> InterCad : seleciona psicologo
+
+        InterCad -> CtrlCad : get_horarios(ID_psicologos)
+
+        CtrlCad -> db : get_horarios(ID_psicologos)
+
+        InterCad -> Admin : pagina com horarios do psicologo listados
+
+        InterCad -> Admin : formulario inclusao horario
+
+        Admin -> InterCad : insere informações do horario
+
+        InterCad -> CtrlCad : marca_horario(ID_psicologo)
+
+        CtrlCad -> db : salva_horario(ID_psicologo)
+
+        db -> CtrlCad : ok
+
+        CtrlCad -> InterCad : ok
+
+        InterCad -> Admin : refresh pagina com novo horario
+
+
+    else nao existem psicologos
+
+        db -> CtrlCad : erro "Nao existe psicologo cadastrado"
+
+        CtrlCad -> InterCad : erro "Nao existe psicologo cadastrado"
+
+        InterCad -> Admin : erro "Nao existe psicologo cadastrado"
+
+    end
+
+else usuario nao existe
+
+    CtrlAdmin -> InterAdmin : erro : "Usuario nao existe"
+
+    InterAdmin -> Admin : erro : "Usuario nao existe ou senha incorreta"
+
+end
+
+@enduml

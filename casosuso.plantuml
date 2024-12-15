@@ -19,27 +19,29 @@ admin --> (Gerar relatórios da plataforma)
 admin --> (Receber feedbacks da plataforma)
 admin --> (Gerenciar perfis de usuário)
 
-(Gerenciar perfis de usuário) --> (cad)
-(Gerenciar perfis de usuário) --> (hor)
+(Gerenciar perfis de usuário) <.. (cad): <<extend>>
+(Gerenciar perfis de usuário) <.. (hor): <<extend>>
 
 user <|-- psi
 user <|-- paci
+user <|-- admin
 
 
 
 (gerenciarConsultas) <-u- user
 
 
-(rem) .u. (gerenciarConsultas) : <<extend>>
-(desm) .u. (gerenciarConsultas) : <<extend>>
-(mar) .u. (gerenciarConsultas) : <<extend>>
-(rem) .u. (Contatar paciente) : <<extend>>
-(verificarHorarios) .u. (gerenciarConsultas) : <<extend>>
+(rem) .u.> (gerenciarConsultas) : <<extend>>
+(desm) .u.> (gerenciarConsultas) : <<extend>>
+(mar) .u.> (gerenciarConsultas) : <<extend>>
+(rem) <.u. (Contatar paciente) : <<extend>>
+(verificarHorarios) .u.> (gerenciarConsultas) : <<extend>>
 
 psi -d-> (Contatar paciente)
+psi -d-> (verificarHorarios)
 
-(rem) .. (verificarHorarios) : <<include>>
-(mar) .down. (verificarHorarios) : <<include>> 
+(rem) ..> (verificarHorarios) : <<include>>
+(mar) .down.> (verificarHorarios) : <<include>> 
 
 psi -d-> (verificarPaciente)
 psi -d-> (verificarMarcados)

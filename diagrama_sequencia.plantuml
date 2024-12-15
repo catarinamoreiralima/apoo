@@ -1,52 +1,106 @@
 @startuml
-
-actor       Usuário       as Foo1
-boundary    "Interface de Login"    as Foo2
-participant ":Login"     as Foo3
-entity      "Controlador de Agenda/Consultas"      as Foo4
-participant ":Marcar Consulta"     as Foo5
+actor Usuario as Foo1
+boundary "Interface de Login" as Foo2
+control "Controlador de Login" as FooCtrl
+participant ":Login" as Foo3
+boundary "Interface de Gerenciamento" as Foo9
+control "Controlador de Agenda/Consultas" as Foo4
+participant ":Marcar Consulta" as Foo5
 participant ":Cadastro" as Foo6
+database ":bancoConsultas" as Foo7
 
 Foo1 -> Foo2 : e-mail
 Foo1 -> Foo2 : senha
-Foo2 -> Foo3 : Validar credenciais
-Foo2 <-- Foo3 : Credenciais Validas?
+Foo2 -> FooCtrl : Enviar credenciais
+FooCtrl -> Foo3 : Validar credenciais
+FooCtrl <-- Foo3 : Credenciais Válidas?
 
+alt login válido
 
-alt login valido
+    FooCtrl -> Foo3: verifica_tipo_usuario(id_usuario)
+    Foo3 --> Foo9 : role:string
 
-    Foo3 -> Foo4: id da conta
-    Foo4 -> Foo5 : verifica_usuario(string)
-    Foo5 --> Foo4 : role(string)
-    alt  usuário é paciente
-        Foo4 -> Foo5 : get_psicologos
-        Foo5 --> Foo4 : psicologos(list)
-    end
+    alt usuário é paciente
+        Foo9 -> Foo4 : Solicitar psicólogos disponíveis
+        Foo4 -> Foo5 : get_psicologos()
+        Foo5 --> Foo4 : psicologos:list
+        Foo4 --> Foo9 : psicologos:list
+        Foo9 --> Foo1 : Exibir psicólogos disponíveis
 
-    Foo4 -> Foo5 : get_horarios_disponiveis(ID_psicologo)
-        
+        Foo1 -> Foo9 : Seleciona psicólogo/a
+        Foo9 -> Foo4 : Seleciona psicólogo/a
+        Foo4 -> Foo7 : get_horarios_disponiveis(ID_psicologo)
+        Foo7 --> Foo4 : horarios:list
+        Foo4 --> Foo9 : horarios:list
 
-        alt existe horario disponivel
-            Foo5 --> Foo4 : horarios(list)
-            Foo4 -> Foo5 : reserva_horario(ID_paciente, ID_psicologo, horario)
-            Foo5 --> Foo4 : ok
+        alt existem horários disponíveis
+
+            Foo9 --> Foo1 : Exibir horários disponíveis
+
+            Foo1 -> Foo9 : Escolhe um horário
+            Foo9 -> Foo4 : Escolhe um horário
+            Foo4 -> Foo5 : marcar_consulta(ID_paciente)
+            Foo5 -> Foo7 : inserir_consulta(ID_paciente)
+            Foo7 --> Foo5 : verdadeiro:boolean
+            Foo5 --> Foo4 : verdadeiro:boolean
+
         else não existe horário disponível
             Foo5 --> Foo4 : "sem horários disponíveis"
+            Foo4 --> Foo9 : Enviar mensagem de erro
+            Foo9 --> Foo1 : Enviar mensagem de erro ao usuário
+
         end
+
+    else usuário é psicologo
+
+        Foo4 -> Foo7 : get_horarios_disponiveis(ID_psicologo)
+        Foo7 --> Foo4 : horarios:list
+        Foo4 --> Foo9 : horarios:list
+
+        alt existem horários disponíveis
+            Foo9 --> Foo1 : Exibir horários disponíveis
+
+            Foo9 -> Foo4 : Solicitar pacientes disponíveis
+            Foo4 -> Foo5 : get_pacientes()
+            Foo5 --> Foo4 : pacientes:list
+            Foo4 --> Foo9 : pacientes:list
+            Foo9 --> Foo1 : Listar pacientes disponíveis
+
+            Foo1 -> Foo9 : Escolhe um horário
+            Foo9 -> Foo4 : Escolhe um horário
+            Foo4 -> Foo5 : marcar_consulta(ID_paciente)
+            Foo5 -> Foo7 : inserir_consulta(ID_paciente)
+            Foo7 --> Foo5 : verdadeiro:boolean
+            Foo5 --> Foo4 : verdadeiro:boolean
+
+        else não existe horário disponível
+            Foo5 --> Foo4 : "sem horários disponíveis"
+            Foo4 --> Foo9 : Enviar mensagem de erro
+            Foo9 --> Foo1 : Enviar mensagem de erro ao usuário
+
+        end
+
+
+    end
+
+
+
 
 else perda de senha
 
-Foo1 -> Foo2: Solicitação de recuperação de senha
-
-
-Foo2 --> Foo1: link de recuperação
-
-
+    Foo1 -> Foo2 : Solicitação de recuperação de senha
+    Foo2 -> FooCtrl : Enviar solicitação de recuperação
+    FooCtrl -> Foo3 : recuperar_senha(email)
+    FooCtrl --> Foo2 : Link de recuperação enviado
 
 else usuário não cadastrado
 
-Foo1 -> Foo6 : email
-    
-    end
+    Foo1 -> Foo2 : Criar cadastro
+    Foo2 -> FooCtrl : Dados da criação de cadastro
+    FooCtrl -> Foo6 : criar_cadatro(dados)
+    Foo6 --> FooCtrl : Cadastro criado com sucesso
+    FooCtrl --> Foo2 : Notificar sucesso no cadastro
+    Foo2 --> Foo1 : Notificar sucesso no cadastro
 
+end
 @enduml

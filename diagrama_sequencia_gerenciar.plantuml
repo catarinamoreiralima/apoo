@@ -1,50 +1,64 @@
 @startuml
-box "Gerenciar Consultas" 
-    actor Usuário
-    boundary "Interface de Login" as Login
-    participant ":Login" as ModuloLogin
-    control "Controlador de Consultas" as Controlador
-    participant ":Marcar Consulta" as ModuloMarcar
-    participant ":Remarcar Consulta" as ModuloRemarcar
-    participant ":Desmarcar_consulta" as ModuloDesmarcar
+box "Gerenciar Consultas"
+actor Usuário
+boundary "Interface de Login" as Login
+control "Controlador de Login" as ControladorLogin
+participant ":Login" as ModuloLogin
+boundary "Interface de Gerenciamento" as InterfaceGerenciamento
+control "Controlador de Consultas" as Controlador
+participant ":Marcar Consulta" as ModuloMarcar
+participant ":Remarcar Consulta" as ModuloRemarcar
+participant ":Desmarcar Consulta" as ModuloDesmarcar
+participant ":Cadastro" as ModuloCadastro
+participant ":Cadastrar HorariosAtendimento" as ModuloHorarios
+database ":bancoConsultas" as BancoConsultas
 
-    == Fluxo Principal ==
-    Usuário -> Login : E-mail
-    Usuário -> Login : Senha
-    Login -> ModuloLogin : Validar credenciais
-    ModuloLogin --> Login : Credenciais válidas?
-    
-    alt Recuperação de senha necessária
-        Usuário -> Login : Solicitação de recuperação de senha
-        Login -> ModuloLogin : Recuperar senha
-        ModuloLogin --> Login : Link de recuperação enviado
-    else Login bem-sucedido
-        Login -> Controlador : validar_ID(string)
-        Controlador --> Login : Verdadeiro(string)
+== Fluxo Principal ==
+Usuário -> Login : E-mail
+Usuário -> Login : Senha
+Login -> ControladorLogin : validar_credenciais(Credenciais)
+ControladorLogin -> ModuloLogin : validar_credenciais(Credenciais)
+ModuloLogin --> ControladorLogin : verdadeiro:boolean
+ControladorLogin --> Login : verdadeiro:boolean
 
-        Controlador -> ModuloMarcar : verificar_horario_disponivel(int, IDPaciente, IDProfissional)
-        ModuloMarcar --> Controlador : Horário válido?
+alt Login bem-sucedido
+    ControladorLogin -> ModuloLogin : verifica_usuário(id_usuario)
+    ControladorLogin --> Controlador : role(string)
+    Controlador -> BancoConsultas : obter_consultas_marcadas(IDusuario)
+    BancoConsultas --> Controlador : lista_consultas:[Consulta]
+    Controlador -> InterfaceGerenciamento : lista_consultas:[Consulta]
+    InterfaceGerenciamento -> Usuário : Mostrar lista de consultas
 
-        Controlador -> ModuloRemarcar : verificar_horario_marcado(int, IDPaciente, IDProfissional)
-        ModuloRemarcar --> Controlador : Horário válido?
 
-        Controlador -> ModuloDesmarcar : verificar_horario_marcado(int, IDPaciente, IDProfissional)
-        ModuloDesmarcar --> Controlador : Horário válido?
+    Usuário -> InterfaceGerenciamento : Selecionar operação (opcional)
+    InterfaceGerenciamento -> Controlador : Passar operação
+    ref over ModuloMarcar : Marcar consulta
+    Controlador -> ModuloMarcar
 
-        alt Horário válido
-
-            ref over ModuloMarcar : Marcar Consulta
-            Controlador -> ModuloMarcar : Realizar marcação
-
-            ref over ModuloRemarcar : Remarcar Consulta
-            Controlador -> ModuloRemarcar : Realizar remarcação
-
-            ref over ModuloDesmarcar : Desmarcar consulta
-            Controlador -> ModuloDesmarcar : Realizar desmarcação
-
-        else Horário inválido
-            Controlador -> Usuário : Mensagem: "Nenhum horário válido para consulta"
-        end
+    alt Há consultas marcadas
+        ref over ModuloRemarcar : Remarcar Consulta
+        Controlador -> ModuloRemarcar
+        ref over ModuloDesmarcar : Desmarcar consulta
+        Controlador -> ModuloDesmarcar
+    else Nenhuma consulta marcada
+        Controlador -> InterfaceGerenciamento: Sem consultas
+        InterfaceGerenciamento -> Usuário : Mensagem: "Você não tem nenhuma consulta marcada"
     end
+else Cadastro de usuário necessário
+    Usuário -> Login : Solicitação de cadastro
+    Login -> ControladorLogin : criar_cadastro(credenciais)
+    ControladorLogin -> ModuloCadastro : criar_cadastro(credenciais)
+    ModuloCadastro --> ControladorLogin : Cadastro criado com sucesso
+    ControladorLogin --> Login : Cadastro criado com sucesso
+    Login --> Usuário : Mensagem: "Usuário cadastrado com sucesso"
+
+else Recuperação de senha necessária
+    Usuário -> Login : Solicitação de recuperação de senha
+    Login -> ControladorLogin : Solicitação de recuperação
+    ControladorLogin -> ModuloLogin : recuperar_senha(e-mail)
+    ModuloLogin --> ControladorLogin : Link de recuperação enviado
+    ControladorLogin --> Login : Link de recuperação enviado
+    Login --> Usuário : Mensagem: "Link de recuperação enviado"
+end
 end box
 @enduml

@@ -1,18 +1,4 @@
-Utilize como base o código abaixo:
-Código do Plant UML:
 @startuml
-box "Desmarcar Consulta" 
-    actor Usuário
-    boundary "Interface de Login" as Login
-    control "Controlador Agenda/Consultas" as Controlador
-    participant ":Login" as ModuloLogin
-    participant ":Desmarcar_consulta" as Modulo
-
-    == Fluxo Principal ==
-    Usuário -> Login : E-mail
-    Usuário -> Login : Senha
-    Login -> ModuloLogin : Validar credenciais
-    ModuloLogin --> Login : Credenciais válidas?@startuml
 actor Usuario as Foo1
 boundary "Interface de Login" as Foo2
 control "Controlador de Login" as FooCtrl
@@ -55,6 +41,24 @@ alt login válido
             Foo7 --> Foo4 : horarios:list
             Foo4 --> Foo9 : horarios:list
 
+            alt existem horários disponíveis
+
+                Foo9 --> Foo1 : Exibir horários disponíveis
+
+                Foo1 -> Foo9 : Escolhe um horário
+                Foo9 -> Foo4 : Escolhe um horário
+                Foo4 -> Foo8 : marcar_consulta(ID_paciente)
+                Foo8 -> Foo7 : inserir_consulta(ID_paciente)
+                Foo7 --> Foo8 : verdadeiro:boolean
+                Foo8 --> Foo4 : verdadeiro:boolean
+
+            else não existe horário disponível
+                Foo8 --> Foo4 : "sem horários disponíveis"
+                Foo4 --> Foo9 : Enviar mensagem de erro
+                Foo9 --> Foo1 : Enviar mensagem de erro ao usuário
+
+            end
+
         else não existe consulta marcada
             Foo5 --> Foo4 : "sem consultas marcadas"
             Foo4 --> Foo9 : Enviar mensagem de erro
@@ -78,7 +82,29 @@ alt login válido
             Foo5 -> Foo7 : remover_consulta(ID_paciente)
             Foo7 --> Foo5 : verdadeiro:boolean
             Foo5 --> Foo4 : verdadeiro:boolean
-            
+
+            Foo4 -> Foo7 : get_horarios_disponiveis(ID_psicologo)
+            Foo7 --> Foo4 : horarios:list
+            Foo4 --> Foo9 : horarios:list
+
+            alt existem horários disponíveis
+
+                Foo9 --> Foo1 : Exibir horários disponíveis
+
+                Foo1 -> Foo9 : Escolhe um horário
+                Foo9 -> Foo4 : Escolhe um horário
+                Foo4 -> Foo8 : marcar_consulta(ID_paciente)
+                Foo5 -> Foo7 : inserir_consulta(ID_paciente)
+                Foo7 --> Foo5 : verdadeiro:boolean
+                Foo5 --> Foo4 : verdadeiro:boolean
+
+            else não existe horário disponível
+                Foo5 --> Foo4 : "sem horários disponíveis"
+                Foo4 --> Foo9 : Enviar mensagem de erro
+                Foo9 --> Foo1 : Enviar mensagem de erro ao usuário
+
+            end
+
         else não existe consulta marcada
             Foo5 --> Foo4 : "sem consultas marcadas"
             Foo4 --> Foo9 : Enviar mensagem de erro
@@ -108,27 +134,4 @@ else usuário não cadastrado
     Foo2 --> Foo1 : Notificar sucesso no cadastro
 
 end
-@enduml
-
-    alt Recuperação de senha necessária
-        Usuário -> Login : Solicitação de recuperação de senha
-        Login -> ModuloLogin : Recuperar senha
-        ModuloLogin --> Login : Link de recuperação enviado
-    else Login bem-sucedido
-        Login -> Controlador : ID da conta
-        Controlador -> Modulo : validar_ID(string)
-        Modulo --> Controlador : Verdadeiro(string)
-
-        Controlador -> Modulo : verificar_horario_marcado(int, ID)
-        Modulo --> Controlador : Horário válido?
-
-        alt Horário válido
-            Controlador -> Modulo : Desmarcar_consulta(int)
-            Modulo --> Controlador : Verdadeiro(int)
-            Controlador -> Usuário : Confirmação da consulta desmarcada
-        else Horário inválido
-            Controlador -> Usuário : Mensagem: "Nenhuma consulta marcada neste horário"
-        end
-    end
-end box
 @enduml
