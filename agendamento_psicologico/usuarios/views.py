@@ -33,7 +33,6 @@ def register_view(request):
             data_nascimento=data_nascimento,
             numero_usp=numero_usp
         )
-
         # Salva o paciente no banco de dados
         paciente.registrarPaciente(request)
 
@@ -85,7 +84,6 @@ def login_view(request):
     print("Exibindo página de login.")
     return render(request, 'usuarios/login.html')
 
-@login_required
 def dashboard(request):
     usuario_id = request.session.get('usuario_id')
 
@@ -103,13 +101,17 @@ def dashboard(request):
     # Renderizar a dashboard com informações do usuário
     return render(request, 'usuarios/dashboard.html', {'usuario': usuario})
 
-@login_required
 def configurar_perfil(request):
-    """
-    View para a página de configuração de perfil.
-    Implementa lógica para editar os dados do perfil do usuário.
-    """
-    #user_profile = request.user.profile
+    
+    usuario_id = request.session.get('usuario_id')
+
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=usuario_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
+
 
     if request.method == 'POST':
         # Atualizar campos do usuário
@@ -133,31 +135,32 @@ def configurar_perfil(request):
 
     return render(request, 'usuarios/configurar_perfil.html')
 
-@login_required
 def gerenciar_consultas(request):
-    """
-    View para gerenciar consultas.
-    Pode ser usada para listar, criar ou editar consultas do usuário.
-    """
-    # Exemplo básico de renderização
-    # Você pode passar consultas do banco de dados no contexto, se necessário
     user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     paciente = get_object_or_404(Paciente, id=user_id) 
     consultas = []  # Substituir por consultas reais do banco de dados 
     consultas = Horario.objects.filter(paciente=paciente).order_by('data', 'hora_inicio')
     return render(request, 'usuarios/gerenciar_consultas.html', {"consultas": consultas})
 
 def logout_view(request):
-    """
-    View para fazer logout do usuário e redirecioná-lo para a página de login.
-    """
-    return redirect('home')  # Redireciona para a página de login
-
+    if 'usuario_id' in request.session:
+        del request.session['usuario_id']  # Remove o ID da sessão
+    return redirect('home')
 
 def register_view(request):
-    """
-    View para registrar um novo usuário.
-    """
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -175,16 +178,28 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'usuarios/register.html', {'form': form})
 
-@login_required
 def marcar_consulta(request):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     if request.method == 'POST':
         return redirect('marcar_consulta')
     # Busca todos os psicólogos 
     psicologos = Psicologo.objects.all()
     return render(request, 'usuarios/marcar_consulta.html', {'psicologos': psicologos})
 
-@login_required
 def listar_horario(request, psicologo_id):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     print(psicologo) 
     horarios_disponiveis = psicologo.horarios.filter(disponivel=True)
@@ -192,8 +207,14 @@ def listar_horario(request, psicologo_id):
         print(i)
     return render(request, 'usuarios/listar_horario.html', {'psicologo': psicologo, 'horarios': horarios_disponiveis})
 
-@login_required
 def marcar_horario(request, horario_id):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     horario = get_object_or_404(Horario, id=horario_id)
     if horario.disponivel:
         user_id = request.session['usuario_id']
@@ -205,13 +226,25 @@ def marcar_horario(request, horario_id):
     else:
         return render(request, 'usuarios/erro.html', {'mensagem': 'Este horário já foi reservado.'})
 
-@login_required
 def perfil_psicologo(request, psicologo_id):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     return render(request, 'perfil_psicologo.html', {'psicologo': psicologo})
 
-@login_required
 def calendario_psicologo(request, psicologo_id):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     horarios = psicologo.horarios.filter(disponivel=True)
 
@@ -223,8 +256,14 @@ def calendario_psicologo(request, psicologo_id):
         'dias_disponiveis': dias_disponiveis,
     })
 
-@login_required
 def horarios_por_dia(request, psicologo_id, data):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     horarios = psicologo.horarios.filter(disponivel=True, data=data)
 
@@ -235,8 +274,14 @@ def horarios_por_dia(request, psicologo_id, data):
         ]
     })
 
-@login_required
 def confirmar_consulta(request, horario_id):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
     horario = get_object_or_404(Horario, id=horario_id, disponivel=True)
     psicologo = horario.psicologo
     paciente = request.user.paciente  # Assumindo que o usuário logado é um paciente
@@ -255,8 +300,15 @@ def confirmar_consulta(request, horario_id):
     return render(request, 'confirmar_consulta.html', {'horario': horario, 'psicologo': psicologo})
 
 
-@login_required
 def cadastrar_horarios(request):
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
+    
     if not hasattr(request.user, 'psicologo'):
         return HttpResponse("Acesso negado.")
 
@@ -273,9 +325,16 @@ def cadastrar_horarios(request):
 
     return render(request, 'usuarios/cadastrar_horarios.html')
 
-
-@login_required
 def horarios_disponiveis(request, psicologo_id):
+    
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
+    
     psicologo = get_object_or_404(Psicologo, id=psicologo_id)
     horarios = Horario.objects.filter(psicologo=psicologo, disponivel=True)
 
@@ -288,8 +347,16 @@ def horarios_disponiveis(request, psicologo_id):
     return render(request, 'usuarios/horarios_disponiveis.html', {'horarios': horarios, 'psicologo': psicologo})
 
 
-@login_required
 def vincular_horario(request, horario_id):
+    
+    user_id = request.session['usuario_id']
+    try:
+        # Buscar o usuário pelo ID armazenado na sessão
+        usuario = Usuario.objects.get(id=user_id)
+    except Usuario.DoesNotExist:
+        # Se o usuário não existe, redirecionar para o login
+        return redirect('login')
+    
     if not hasattr(request.user, 'psicologo'):
         return HttpResponse("Acesso negado.")
 
