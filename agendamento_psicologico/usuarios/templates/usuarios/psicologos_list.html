@@ -14,8 +14,6 @@
         {% if psicologos %}
             {% for psicologo in psicologos %}
             <div class="card">
-                <!-- Substitua 'default-avatar.png' pelo caminho correto para sua imagem padrão -->
-                <!--<img src="{{ psicologo.imagem.url|default:'/static/default-avatar.png' }}" alt="Foto de {{ psicologo.nome }}">-->
                 <div class="card-body">
                     <h2 class="card-title">{{ psicologo.nome }}</h2>
                     <p class="card-subtitle">{{ psicologo.abordagem }}</p>
