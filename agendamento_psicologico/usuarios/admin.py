@@ -8,7 +8,7 @@ class HorarioInline(admin.TabularInline):
     extra = 1  # Número de horários adicionais exibidos para adicionar
 
 
-#Abstracao django para cadfastro de Psicologo
+#Abstracao django para cadastro de Psicologo
 @admin.register(Psicologo)
 class PsicologoAdmin(admin.ModelAdmin):
     
@@ -22,7 +22,7 @@ class PsicologoAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-#Abstracao django para cadfastro de Paciente       
+#Abstracao django para cadastro de Paciente       
 @admin.register(Paciente)
 class PacienteAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'telefone', 'data_nascimento', 'numero_usp')
