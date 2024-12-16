@@ -31,12 +31,6 @@ class Psicologo(Usuario):
     registro_profissional = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100)
 
-    """def horarios_disponiveis(self):
-        return self.horarios.filter(disponivel=True)
-
-    def horarios_marcados(self):
-        return self.horarios.filter(disponivel=False)
-"""
 class Administrador (Usuario):
     cargo = models.CharField(max_length=100) 
 
