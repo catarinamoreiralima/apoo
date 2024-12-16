@@ -34,17 +34,17 @@ class Psicologo(Usuario):
     registro_profissional = models.CharField(max_length=100)
     abordagem = models.CharField(max_length=100)
 
+#campos adicionais do Administrador, que herda de usuario
 class Administrador (Usuario):
     cargo = models.CharField(max_length=100) 
 
-    @classmethod
-    def choices(cls):
-        return [(key.name, key.value) for key in cls]
-
+#classe enumerativa 
 class Hora(Enum):
     @classmethod
     def choices(cls):
         return [(f'{hora:02}h00', f'{hora}:00') for hora in range(24)]
+
+
 #classe de horários que utilizaremos para salvar no banco de dados, temos que são atrelados sempre a um psicólogo 
 #e quando temos uma consulta marcada ele passa a ter um paciente associado também 
 class Horario(models.Model):

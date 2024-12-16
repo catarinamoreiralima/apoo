@@ -14,6 +14,8 @@
 "Verificar dados paciente" as (verificarPaciente)
 "Verificar pacientes marcados" as (verificarMarcados)
 "Cadastrar horarios disponíveis" as (hor)
+"Login" as (login)
+"Logout" as (logout)
 
 admin --> (Gerar relatórios da plataforma)
 admin --> (Receber feedbacks da plataforma)
@@ -21,6 +23,8 @@ admin --> (Gerenciar perfis de usuário)
 
 (Gerenciar perfis de usuário) <.. (cad): <<extend>>
 (Gerenciar perfis de usuário) <.. (hor): <<extend>>
+(Gerenciar perfis de usuário) <.. (login): <<extend>>
+(Gerenciar perfis de usuário) <.. (logout): <<extend>>
 
 user <|-- psi
 user <|-- paci

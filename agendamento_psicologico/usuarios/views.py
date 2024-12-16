@@ -45,22 +45,22 @@ def register_view(request):
     return render(request, 'usuarios/register.html')
 
 
-# Classe personalizada para o Login
+# View de login para pacientes e psicologos
 def login_view(request):
     if request.method == "POST":
         
-        #salva email e senha enviados no formulario HTML
+        #salvar email e senha enviados no formulario HTML
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
-        #busca no banco de dados e valida senha 
+        #buscar no banco de dados e valida senha 
         usuario, mensagem = verificar_usuario(email, senha)
         print(f"Usuário autenticado: {usuario}")
         print(f"Mensagem: {mensagem}")
         
-        #verifica se foi bem sucedido
+        #verificar se foi bem sucedido
         if usuario: 
-            #salva ID na sessao do navegador -> utilizado para verificar se esta logado
+            #salvar ID na sessao do navegador -> utilizado para verificar se esta logado
             request.session['usuario_id'] = usuario.id
             print("Redirecionando para o dashboard...")
             return redirect('dashboard')
@@ -94,8 +94,7 @@ def dashboard(request):
 
 #View para render do perfil e sua modificacao -> acesso ao banco nao implementado
 def configurar_perfil(request):
-    
-    
+     
     #Verifica se esta logado
     usuario_id = request.session.get('usuario_id')
 
@@ -130,10 +129,10 @@ def configurar_perfil(request):
     return render(request, 'usuarios/configurar_perfil.html')
 
 
-# Render gerenciar consulta. Renderiza as consultas que o paciente tem marcado
+# Render da pagina de gerenciar consultas. Renderiza as consultas marcadas do paciente
 def gerenciar_consultas(request):
     
-    #verifica se esta logado
+    #verificar se esta logado
     user_id = request.session['usuario_id']
     try:
         # Buscar o usuário pelo ID armazenado na sessão
@@ -142,7 +141,7 @@ def gerenciar_consultas(request):
         # Se o usuário não existe, redirecionar para o login
         return redirect('login')
     paciente = get_object_or_404(Paciente, id=user_id) 
-    consultas = []  # Substituir por consultas reais do banco de dados 
+    consultas = [] 
     consultas = Horario.objects.filter(paciente=paciente).order_by('data', 'hora_inicio')
     return render(request, 'usuarios/gerenciar_consultas.html', {"consultas": consultas})
 

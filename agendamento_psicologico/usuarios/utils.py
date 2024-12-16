@@ -1,6 +1,8 @@
 from django.contrib.auth.hashers import check_password
 from .models import Usuario
 
+
+#funcao adifional que verifica senha do usuario
 def verificar_usuario(email, senha):
     usuarios = Usuario.objects.all()
     for usuario in usuarios:

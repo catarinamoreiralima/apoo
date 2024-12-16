@@ -1,0 +1,9 @@
+@startuml
+actor Usuário as user
+control "Interface de Logout" as InterAdmin
+control "Controlador de Logout" as CtrlAdmin
+
+user -> InterAdmin : clica no botao
+InterAdmin -> CtrlAdmin : user_logout()
+CtrlAdmin -> InterAdmin : remove ID da sessao do navegador
+InterAdmin -> user : redireciona a pagina de login

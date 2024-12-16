@@ -51,10 +51,6 @@ alt login válido
             Foo7 --> Foo5 : verdadeiro:boolean
             Foo5 --> Foo4 : verdadeiro:boolean
 
-            Foo4 -> Foo7 : get_horarios_disponiveis(ID_psicologo)
-            Foo7 --> Foo4 : horarios:list
-            Foo4 --> Foo9 : horarios:list
-
         else não existe consulta marcada
             Foo5 --> Foo4 : "sem consultas marcadas"
             Foo4 --> Foo9 : Enviar mensagem de erro

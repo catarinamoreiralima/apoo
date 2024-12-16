@@ -1,0 +1,35 @@
+@startuml
+actor Usuário as user
+boundary "Interface de Login" as InterAdmin
+control "Controlador de Login" as CtrlAdmin
+participant ":Login" as Login
+database ":bancoUsuarios" as db
+
+user -> InterAdmin : email
+user -> InterAdmin : senha
+
+InterAdmin -> CtrlAdmin : verifica_usuario(email, senha)
+CtrlAdmin -> db : get_Admin (email, senha)
+db -> CtrlAdmin : Admin : usuario
+
+alt usuario existe
+
+    CtrlAdmin -> Login : autentica_usuario(email, senha)
+
+    Login -> CtrlAdmin : id na sessao do navegador
+
+    CtrlAdmin -> InterAdmin : ok
+
+    InterAdmin -> user : redireciona para dashboard
+
+    
+
+else usuario nao existe
+
+    CtrlAdmin -> InterAdmin : erro : "Usuario nao existe"
+
+    InterAdmin -> user : erro : "Usuario nao existe ou senha incorreta"
+
+end
+
+@enduml
