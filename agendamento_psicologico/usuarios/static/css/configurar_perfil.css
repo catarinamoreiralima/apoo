@@ -205,8 +205,8 @@ form {
 }
 
 .profile-field textarea {
-    resize: vertical; /* Permite redimensionamento vertical do textarea */
-    height: 100px; /* Altura padrão para o textarea */
+    resize: vertical; 
+    height: 100px; 
 }
 
 /* Botão Salvar Alterações */
